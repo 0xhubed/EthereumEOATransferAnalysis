@@ -1,9 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Graph } from 'react-d3-graph';
 import './TransferGraph.css';
 
 const TransferGraph = ({ transferPartners, searchAddress }) => {
   const [highlightedNode, setHighlightedNode] = useState(null);
+  const graphRef = useRef(null);
+  const [errorState, setErrorState] = useState(false);
   
   // Create graph data structure
   const data = {
@@ -69,16 +71,16 @@ const TransferGraph = ({ transferPartners, searchAddress }) => {
     highlightDegree: 1,
     highlightOpacity: 0.1,
     linkHighlightBehavior: true,
-    maxZoom: 4,
+    maxZoom: 3,
     minZoom: 0.5,
     nodeHighlightBehavior: true,
-    panAndZoom: true, // Enable pan and zoom
+    panAndZoom: false, // Disable built-in pan and zoom to avoid transform errors
     staticGraph: false,
-    width: 800,
+    width: 1100,
     d3: {
       alphaTarget: 0.05,
       gravity: -150,
-      linkLength: 150,
+      linkLength: 180,
       linkStrength: 1
     },
     node: {
@@ -120,21 +122,45 @@ const TransferGraph = ({ transferPartners, searchAddress }) => {
     }
   };
 
+  // Add error handler and custom zoom controls
+  useEffect(() => {
+    // Reset error state when data changes
+    setErrorState(false);
+  }, [transferPartners]);
+
+  // Custom error handler
+  const handleGraphError = useCallback((error) => {
+    console.error('Graph error:', error);
+    setErrorState(true);
+  }, []);
+
   // Event handlers
   const onClickNode = useCallback((nodeId) => {
+    if (errorState) return;
     setHighlightedNode(nodeId === highlightedNode ? null : nodeId);
-  }, [highlightedNode]);
+  }, [highlightedNode, errorState]);
 
   return (
     <div className="transfer-graph-container">
       <h3>Transfer Network Visualization</h3>
       <div className="graph-wrapper">
-        <Graph
-          id="transfer-graph"
-          data={data}
-          config={graphConfig}
-          onClickNode={onClickNode}
-        />
+        {errorState ? (
+          <div className="graph-error">
+            <p>Error rendering graph. Please try a different address or refresh the page.</p>
+          </div>
+        ) : (
+          <Graph
+            id="transfer-graph"
+            ref={graphRef}
+            data={data}
+            config={graphConfig}
+            onClickNode={onClickNode}
+            onError={handleGraphError}
+          />
+        )}
+      </div>
+      <div className="graph-controls">
+        <p>Use the table below to sort and explore the transfer data</p>
       </div>
       <div className="legend">
         <div className="legend-item">

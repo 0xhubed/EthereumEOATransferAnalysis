@@ -16,6 +16,23 @@
   background-color: #fff;
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.graph-error {
+  text-align: center;
+  padding: 2rem;
+  color: #e57373;
+  background-color: #ffebee;
+  border-radius: 4px;
+  width: 80%;
+}
+
+.graph-controls {
+  margin-top: 10px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .graph-wrapper svg {
