@@ -1,0 +1,229 @@
+.app {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background-color: #282c34;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.app-footer {
+  background-color: #282c34;
+  padding: 1rem;
+  color: white;
+}
+
+.connect-button {
+  background-color: #61dafb;
+  color: black;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.connect-button:hover {
+  background-color: #21a9db;
+}
+
+.wallet-info {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.error {
+  color: #ff6b6b;
+  margin-top: 1rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 800px;
+}
+
+.card h2 {
+  color: #282c34;
+  margin-top: 0;
+}
+
+/* New styles for the transfer history explorer */
+
+.input-group {
+  display: flex;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.text-input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+.action-button {
+  background-color: #61dafb;
+  color: black;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-button:hover:not(:disabled) {
+  background-color: #21a9db;
+}
+
+.action-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.use-wallet-button {
+  background-color: transparent;
+  color: #282c34;
+  border: 1px solid #282c34;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.3s;
+}
+
+.use-wallet-button:hover {
+  background-color: #282c34;
+  color: white;
+}
+
+.api-key-section, .search-section, .results-section {
+  width: 100%;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.success-text {
+  color: #4caf50;
+  margin-top: 0.5rem;
+}
+
+.transfer-list {
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.transfer-item {
+  display: flex;
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.transfer-item:last-child {
+  border-bottom: none;
+}
+
+.transfer-item.header {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.transfer-item .address {
+  flex: 1;
+  text-align: left;
+  word-break: break-all;
+}
+
+.transfer-item .amount {
+  flex: 1;
+  text-align: right;
+}
+
+.transfer-item .sent {
+  color: #e57373;
+}
+
+.transfer-item .received {
+  color: #4caf50;
+}
+
+.transfer-item .total {
+  font-weight: bold;
+}
+
+.transfer-item .actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-button {
+  background-color: #eeeeee;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.details-button:hover {
+  background-color: #dddddd;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1rem;
+  }
+  
+  .transfer-item {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .transfer-item .address,
+  .transfer-item .amount {
+    flex: 0 0 100%;
+    text-align: left;
+    margin: 0.25rem 0;
+  }
+  
+  .transfer-item.header {
+    display: none;
+  }
+}
