@@ -60,7 +60,7 @@ const TransferDetails = ({ partner, onClose }) => {
                         rel="noopener noreferrer"
                         className="hash"
                       >
-                        {tx.hash.substring(0, 10)}...{tx.hash.substring(tx.hash.length - 6)}
+                        {tx.hash}
                       </a>
                     </div>
                     <div className="detail-item">

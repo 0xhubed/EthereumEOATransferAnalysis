@@ -233,7 +233,7 @@ function App() {
                         style={{cursor: 'pointer'}}
                       >
                         <div className="address" title={partner.address}>
-                          {formatAddress(partner.address)}
+                          {partner.address}
                         </div>
                         <div className="amount sent">
                           {formatEther(partner.totalSent)}

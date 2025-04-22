@@ -197,9 +197,11 @@
 }
 
 .transfer-item .address {
-  flex: 1;
+  flex: 1.5;
   text-align: left;
   word-break: break-all;
+  font-family: monospace;
+  font-size: 0.9em;
 }
 
 .transfer-item .amount {
