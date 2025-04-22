@@ -69,16 +69,16 @@ const TransferGraph = ({ transferPartners, searchAddress }) => {
     highlightDegree: 1,
     highlightOpacity: 0.1,
     linkHighlightBehavior: true,
-    maxZoom: 8,
-    minZoom: 0.1,
+    maxZoom: 4,
+    minZoom: 0.5,
     nodeHighlightBehavior: true,
-    panAndZoom: false,
+    panAndZoom: true, // Enable pan and zoom
     staticGraph: false,
     width: 800,
     d3: {
       alphaTarget: 0.05,
-      gravity: -250,
-      linkLength: 120,
+      gravity: -150,
+      linkLength: 150,
       linkStrength: 1
     },
     node: {

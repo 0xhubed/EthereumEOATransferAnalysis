@@ -18,6 +18,12 @@ function App() {
   
   // Selected partner for details view
   const [selectedPartner, setSelectedPartner] = useState(null);
+  
+  // Sorting
+  const [sortConfig, setSortConfig] = useState({
+    key: 'totalValue',
+    direction: 'descending'
+  });
 
   useEffect(() => {
     // Auto-initialize Alchemy if API key exists in environment
@@ -87,6 +93,48 @@ function App() {
   const closeTransferDetails = () => {
     setSelectedPartner(null);
   };
+  
+  // Sort function for the transfer partners
+  const sortedPartners = React.useMemo(() => {
+    const sortablePartners = [...transferPartners];
+    if (sortConfig.key) {
+      sortablePartners.sort((a, b) => {
+        let aValue, bValue;
+        
+        if (sortConfig.key === 'address') {
+          aValue = a.address;
+          bValue = b.address;
+        } else if (sortConfig.key === 'totalSent') {
+          aValue = a.totalSent;
+          bValue = b.totalSent;
+        } else if (sortConfig.key === 'totalReceived') {
+          aValue = a.totalReceived;
+          bValue = b.totalReceived;
+        } else if (sortConfig.key === 'totalValue') {
+          aValue = a.totalSent + a.totalReceived;
+          bValue = b.totalSent + b.totalReceived;
+        }
+        
+        if (aValue < bValue) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortablePartners;
+  }, [transferPartners, sortConfig]);
+  
+  // Handle column header click for sorting
+  const requestSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
 
   return (
     <div className="app">
@@ -147,13 +195,37 @@ function App() {
                 ) : (
                   <div className="transfer-list">
                     <div className="transfer-item header">
-                      <div className="address">Address</div>
-                      <div className="amount">Sent</div>
-                      <div className="amount">Received</div>
-                      <div className="amount">Total Volume</div>
-                      <div className="actions"></div>
+                      <div 
+                        className={`address sortable ${sortConfig.key === 'address' ? sortConfig.direction : ''}`}
+                        onClick={() => requestSort('address')}
+                      >
+                        <span>Address</span>
+                        <span className="sort-icon"></span>
+                      </div>
+                      <div 
+                        className={`amount sortable ${sortConfig.key === 'totalSent' ? sortConfig.direction : ''}`}
+                        onClick={() => requestSort('totalSent')}
+                      >
+                        <span>Sent</span>
+                        <span className="sort-icon"></span>
+                      </div>
+                      <div 
+                        className={`amount sortable ${sortConfig.key === 'totalReceived' ? sortConfig.direction : ''}`}
+                        onClick={() => requestSort('totalReceived')}
+                      >
+                        <span>Received</span>
+                        <span className="sort-icon"></span>
+                      </div>
+                      <div 
+                        className={`amount sortable ${sortConfig.key === 'totalValue' ? sortConfig.direction : ''}`}
+                        onClick={() => requestSort('totalValue')}
+                      >
+                        <span>Total Volume</span>
+                        <span className="sort-icon"></span>
+                      </div>
+                      <div className="actions">Actions</div>
                     </div>
-                    {transferPartners.map((partner, index) => (
+                    {sortedPartners.map((partner, index) => (
                       <div 
                         key={index} 
                         className="transfer-item"
