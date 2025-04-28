@@ -135,6 +135,33 @@
   text-align: left;
 }
 
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+}
+
+.anomaly-filter {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background-color: #fff9c4;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #ffeb3b;
+}
+
+.anomaly-filter input {
+  margin-right: 8px;
+}
+
 .success-text {
   color: #4caf50;
   margin-top: 0.5rem;
@@ -221,7 +248,16 @@
   font-weight: bold;
 }
 
+.transfer-item .annotation {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 8px;
+}
+
 .transfer-item .actions {
+  flex: 0.5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -241,6 +277,64 @@
   background-color: #dddddd;
 }
 
+/* Anomaly highlighting in transfer list */
+.transfer-item.anomaly {
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+}
+
+.anomaly-indicator {
+  margin-right: 8px;
+  color: #d32f2f;
+}
+
+.anomaly-tag {
+  display: inline-block;
+  background-color: #ffeb3b;
+  color: #d32f2f;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  margin-top: 4px;
+  font-weight: bold;
+}
+
+.visualization-controls {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f5f7f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.visualization-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.visualization-buttons button {
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.visualization-buttons button:hover {
+  background-color: #f0f4f8;
+  border-color: #c7d2fe;
+}
+
+.visualization-buttons button.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
 @media (max-width: 768px) {
   .card {
     padding: 1rem;
@@ -252,7 +346,8 @@
   }
   
   .transfer-item .address,
-  .transfer-item .amount {
+  .transfer-item .amount,
+  .transfer-item .annotation {
     flex: 0 0 100%;
     text-align: left;
     margin: 0.25rem 0;
@@ -260,5 +355,10 @@
   
   .transfer-item.header {
     display: none;
+  }
+  
+  .transfer-item .annotation {
+    padding: 4px 0;
+    border-top: 1px solid #f5f5f5;
   }
 }

@@ -1,0 +1,211 @@
+.timeline-visualization {
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.timeline-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.timeline-controls {
+  display: flex;
+  align-items: center;
+}
+
+.time-filter-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.time-filter-buttons button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.time-filter-buttons button:hover {
+  background-color: #e0e0e0;
+}
+
+.time-filter-buttons button.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.timeline-chart-container {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-chart {
+  width: 100%;
+  height: 100%;
+}
+
+.timeline-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.tooltip-date {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.tooltip-partner {
+  color: #aaddff;
+}
+
+.tooltip-value {
+  margin: 5px 0;
+}
+
+.tooltip-hash {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.transaction-point {
+  cursor: pointer;
+}
+
+.transaction-point.sent {
+  fill: #ff9999;
+}
+
+.transaction-point.received {
+  fill: #99ff99;
+}
+
+.timeline-legend {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.dot.sent {
+  background-color: #ff9999;
+  border: 1px solid #444;
+}
+
+.dot.received {
+  background-color: #99ff99;
+  border: 1px solid #444;
+}
+
+.legend-note {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+.legend-note p {
+  margin: 3px 0;
+}
+
+.x-axis path,
+.y-axis path,
+.x-axis line,
+.y-axis line {
+  stroke: #ccc;
+}
+
+.x-axis text,
+.y-axis text {
+  fill: #666;
+  font-size: 10px;
+}
+
+.axis-label {
+  fill: #666;
+  font-size: 12px;
+}
+
+.chart-title {
+  fill: #333;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.transaction-line {
+  opacity: 0.4;
+}
+
+.no-data-message, .error-message {
+  fill: #999;
+  font-size: 14px;
+}
+
+.error-message {
+  fill: #d63031;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .timeline-controls {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .time-filter-buttons {
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .time-filter-buttons button {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
