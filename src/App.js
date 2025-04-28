@@ -13,6 +13,7 @@ import TransferGraph from './components/TransferGraph';
 import TimelineVisualization from './components/TimelineVisualization';
 import NetworkEvolution from './components/NetworkEvolution';
 import SimplifiedGraph3D from './components/SimplifiedGraph3D';
+import PatternAnalysis from './components/PatternAnalysis';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
@@ -27,13 +28,17 @@ function App() {
   // Transfer data
   const [searchAddress, setSearchAddress] = useState('');
   const [transferPartners, setTransferPartners] = useState([]);
+  const [transactions, setTransactions] = useState(null);
   const [showTransferHistory, setShowTransferHistory] = useState(false);
   
   // Selected partner for details view
   const [selectedPartner, setSelectedPartner] = useState(null);
   
   // Visualization options
-  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'evolution', '3d'
+  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d'
+  
+  // Analysis options
+  const [showAnalysis, setShowAnalysis] = useState(false);
   
   // Time filter options
   const [timeFilter, setTimeFilter] = useState({
@@ -189,9 +194,14 @@ function App() {
         setError('No transfer history found for this address in the specified range.');
       }
       
+      // Store the raw transactions for pattern analysis
+      setTransactions(transactions);
       setTransferPartners(partners);
       setShowTransferHistory(true);
       setLoading(false);
+      
+      // Reset analysis state when loading new data
+      setShowAnalysis(false);
       
       // Auto-save this search
       saveSearch(searchAddress);
@@ -505,6 +515,26 @@ function App() {
                   transferPartners={transferPartners}
                   searchAddress={searchAddress}
                 />
+              )}
+              
+              {/* Advanced Analytics */}
+              {transferPartners.length > 0 && (
+                <div className="analytics-section">
+                  <button 
+                    className={`analysis-toggle ${showAnalysis ? 'active' : ''}`} 
+                    onClick={() => setShowAnalysis(!showAnalysis)}
+                  >
+                    {showAnalysis ? 'Hide Pattern Analysis' : 'Show Pattern Analysis'}
+                  </button>
+                  
+                  {showAnalysis && (
+                    <PatternAnalysis 
+                      transferPartners={transferPartners}
+                      transactions={transactions}
+                      searchAddress={searchAddress}
+                    />
+                  )}
+                </div>
               )}
               
               {/* Transfer Partners List */}

@@ -10,10 +10,10 @@
 
 ## Advanced Analytics
 
-- **Transaction Pattern Recognition**: Identify common transaction patterns and behaviors
+- ✅ **Transaction Pattern Recognition**: Identify common transaction patterns and behaviors
 - **Smart Contract Interaction Analysis**: Show how addresses interact with smart contracts
-- **Wallet Profiling**: Categorize wallets based on behavior (e.g., trader, hodler, DeFi user)
-- **Risk Scoring**: Assign risk scores to addresses based on transaction patterns
+- ✅ **Wallet Profiling**: Categorize wallets based on behavior (e.g., trader, hodler, DeFi user)
+- ✅ **Risk Scoring**: Assign risk scores to addresses based on transaction patterns
 - **Identity Clustering**: Group addresses that likely belong to the same entity
 - **Gas Usage Analysis**: Visualize gas spending patterns and efficiency
 

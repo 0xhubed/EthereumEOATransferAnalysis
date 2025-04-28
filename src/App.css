@@ -335,6 +335,46 @@
   border-color: #2563eb;
 }
 
+/* Analytics Section */
+.analytics-section {
+  margin: 20px 0;
+  padding: 0;
+}
+
+.analysis-toggle {
+  padding: 10px 16px;
+  background-color: #f5f7f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.analysis-toggle::before {
+  content: '📊';
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.analysis-toggle:hover {
+  background-color: #e2e8f0;
+}
+
+.analysis-toggle.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.analysis-toggle.active::before {
+  content: '📊';
+}
+
 @media (max-width: 768px) {
   .card {
     padding: 1rem;
