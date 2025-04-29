@@ -338,7 +338,16 @@
 /* Analytics Section */
 .analytics-section {
   margin: 20px 0;
-  padding: 0;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.analytics-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .analysis-toggle {
@@ -352,7 +361,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 .analysis-toggle::before {

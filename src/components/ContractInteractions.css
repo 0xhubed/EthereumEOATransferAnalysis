@@ -1,0 +1,413 @@
+.contract-interactions-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.contract-interactions-container h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.4rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.loading-container,
+.error-container,
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  text-align: center;
+  color: #666;
+}
+
+.error-container {
+  color: #e74c3c;
+}
+
+.contract-analysis-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contract-analysis-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.overview-stats {
+  display: flex;
+  gap: 20px;
+  grid-column: 1 / -1;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.total-interactions {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+}
+
+.unique-contracts {
+  background-color: #f1f8e9;
+  border-left: 4px solid #8bc34a;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.frequency-stats,
+.category-distribution,
+.trending-contracts {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.frequency-stats h4,
+.category-distribution h4,
+.trending-contracts h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.frequency-metrics {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.frequency-metric {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f5f7fa;
+}
+
+.frequency-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.frequency-label {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+.category-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-bar-item {
+  margin-bottom: 10px;
+}
+
+.category-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+.category-bar-container {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.category-bar-fill {
+  height: 100%;
+  background-color: #3498db;
+  border-radius: 4px;
+}
+
+.trends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trend-item {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f5f7fa;
+  border-left: 3px solid #9c27b0;
+}
+
+.trend-contract {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.trend-contract:hover {
+  color: #3498db;
+}
+
+.trend-name {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.trend-address {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.trend-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.trend-type {
+  color: #9c27b0;
+  font-weight: bold;
+}
+
+.trend-stats {
+  color: #666;
+}
+
+.contract-detail-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .contract-detail-section {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+.contract-list {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+}
+
+.contract-list h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.contract-list-table {
+  width: 100%;
+}
+
+.contract-list-header {
+  display: grid;
+  grid-template-columns: 1.5fr 0.5fr 1fr 0.8fr;
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.contract-list-item {
+  display: grid;
+  grid-template-columns: 1.5fr 0.5fr 1fr 0.8fr;
+  padding: 12px 10px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.contract-list-item:hover {
+  background-color: #f5f7fa;
+}
+
+.contract-list-item.selected {
+  background-color: #e3f2fd;
+}
+
+.contract-name {
+  font-weight: bold;
+  color: #444;
+}
+
+.contract-address {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 3px;
+}
+
+.contract-interactions {
+  font-weight: bold;
+  color: #3498db;
+}
+
+.contract-value {
+  font-size: 0.85rem;
+}
+
+.sent-value {
+  color: #e74c3c;
+}
+
+.received-value {
+  color: #2ecc71;
+  margin-top: 2px;
+}
+
+.zero-value {
+  color: #999;
+}
+
+.contract-last-interaction {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.contract-detail-view {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contract-detail-view h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.contract-detail-card {
+  padding: 15px;
+  border-radius: 6px;
+  background-color: #f8fafc;
+  border: 1px solid #e0e0e0;
+}
+
+.contract-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.contract-detail-header h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  word-break: break-word;
+}
+
+.contract-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.is-contract {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.is-verified {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.token-symbol {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.contract-detail-address {
+  margin-bottom: 10px;
+  word-break: break-all;
+  font-size: 0.85rem;
+}
+
+.contract-detail-item {
+  margin-bottom: 8px;
+  display: flex;
+  font-size: 0.9rem;
+}
+
+.label {
+  font-weight: bold;
+  color: #666;
+  margin-right: 8px;
+  min-width: 80px;
+}
+
+.value {
+  color: #333;
+}
+
+.contract-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.etherscan-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background-color 0.2s;
+}
+
+.etherscan-link:hover {
+  background-color: #2980b9;
+}
+
+.analysis-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  color: #666;
+  font-size: 0.85rem;
+}

@@ -14,6 +14,7 @@ import TimelineVisualization from './components/TimelineVisualization';
 import NetworkEvolution from './components/NetworkEvolution';
 import SimplifiedGraph3D from './components/SimplifiedGraph3D';
 import PatternAnalysis from './components/PatternAnalysis';
+import ContractInteractions from './components/ContractInteractions';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
@@ -39,6 +40,7 @@ function App() {
   
   // Analysis options
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [showContractAnalysis, setShowContractAnalysis] = useState(false);
   
   // Time filter options
   const [timeFilter, setTimeFilter] = useState({
@@ -202,6 +204,7 @@ function App() {
       
       // Reset analysis state when loading new data
       setShowAnalysis(false);
+      setShowContractAnalysis(false);
       
       // Auto-save this search
       saveSearch(searchAddress);
@@ -520,17 +523,37 @@ function App() {
               {/* Advanced Analytics */}
               {transferPartners.length > 0 && (
                 <div className="analytics-section">
-                  <button 
-                    className={`analysis-toggle ${showAnalysis ? 'active' : ''}`} 
-                    onClick={() => setShowAnalysis(!showAnalysis)}
-                  >
-                    {showAnalysis ? 'Hide Pattern Analysis' : 'Show Pattern Analysis'}
-                  </button>
+                  <div className="analytics-buttons">
+                    <button 
+                      className={`analysis-toggle ${showAnalysis ? 'active' : ''}`} 
+                      onClick={() => {
+                        setShowAnalysis(!showAnalysis);
+                        if (!showAnalysis) setShowContractAnalysis(false);
+                      }}
+                    >
+                      {showAnalysis ? 'Hide Pattern Analysis' : 'Show Pattern Analysis'}
+                    </button>
+                    <button 
+                      className={`analysis-toggle ${showContractAnalysis ? 'active' : ''}`} 
+                      onClick={() => {
+                        setShowContractAnalysis(!showContractAnalysis);
+                        if (!showContractAnalysis) setShowAnalysis(false);
+                      }}
+                    >
+                      {showContractAnalysis ? 'Hide Contract Analysis' : 'Show Contract Analysis'}
+                    </button>
+                  </div>
                   
                   {showAnalysis && (
                     <PatternAnalysis 
                       transferPartners={transferPartners}
                       transactions={transactions}
+                      searchAddress={searchAddress}
+                    />
+                  )}
+                  
+                  {showContractAnalysis && (
+                    <ContractInteractions 
                       searchAddress={searchAddress}
                     />
                   )}
