@@ -454,14 +454,6 @@ function App() {
           
           {showTransferHistory && (
             <>
-              {/* Transfer Graph Visualization */}
-              {transferPartners.length > 0 && (
-                <TransferGraph 
-                  transferPartners={transferPartners} 
-                  searchAddress={searchAddress}
-                />
-              )}
-              
               {/* Visualization Controls */}
               {transferPartners.length > 0 && (
                 <div className="visualization-controls">
