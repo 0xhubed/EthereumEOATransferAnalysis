@@ -1,0 +1,540 @@
+.gas-analysis-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.gas-analysis-container h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.4rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.loading-container,
+.error-container,
+.no-data-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  text-align: center;
+  color: #666;
+}
+
+.error-container {
+  color: #e74c3c;
+}
+
+.gas-analysis-tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab-button:hover {
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+
+.tab-button.active {
+  color: #3b82f6;
+  border-bottom: 2px solid #3b82f6;
+  font-weight: 500;
+}
+
+.gas-analysis-content {
+  min-height: 300px;
+}
+
+/* Overview tab styles */
+.overview-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stat-title {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.stat-value.primary {
+  color: #3b82f6;
+}
+
+.stat-value.secondary {
+  color: #10b981;
+}
+
+.stat-value.tertiary {
+  color: #8b5cf6;
+}
+
+.stat-description {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.overview-charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .overview-charts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chart-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Gas Distribution Chart */
+.gas-distribution-chart h4,
+.time-series-chart h4,
+.gas-efficiency-gauge h4,
+.optimization-tips h4,
+.gas-transactions-table h4,
+.gas-trend-insights h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #334155;
+  font-size: 1.1rem;
+}
+
+.distribution-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.distribution-category {
+  margin-bottom: 5px;
+}
+
+.distribution-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.distribution-bar-container {
+  height: 10px;
+  background-color: #f1f5f9;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.distribution-bar {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+/* Gas Efficiency Gauge */
+.gas-efficiency-gauge {
+  text-align: center;
+}
+
+.gauge {
+  position: relative;
+  width: 150px;
+  height: 75px;
+  margin: 0 auto 15px;
+}
+
+.gauge-body {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  margin-top: -75px;
+  border-radius: 150px 150px 0 0;
+  background-color: #f1f5f9;
+  overflow: hidden;
+}
+
+.gauge-fill {
+  position: absolute;
+  top: 75px;
+  left: 75px;
+  width: 3px;
+  height: 65px;
+  background-color: transparent;
+  transform-origin: top center;
+  transition: transform 0.5s ease;
+}
+
+.gauge-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -5px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.gauge.low .gauge-fill {
+  background-color: #ef4444;
+}
+
+.gauge.low .gauge-fill::before {
+  background-color: #ef4444;
+}
+
+.gauge.medium .gauge-fill {
+  background-color: #f59e0b;
+}
+
+.gauge.medium .gauge-fill::before {
+  background-color: #f59e0b;
+}
+
+.gauge.high .gauge-fill {
+  background-color: #10b981;
+}
+
+.gauge.high .gauge-fill::before {
+  background-color: #10b981;
+}
+
+.gauge-cover {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 150px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 12px;
+}
+
+.gauge-cover span:first-child {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.gauge-label {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-top: -3px;
+}
+
+.gauge-ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  margin: 0 auto;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.gauge-description {
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: #64748b;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Time Series Chart */
+.time-series-chart {
+  margin-bottom: 30px;
+}
+
+.time-series-container {
+  display: flex;
+  height: 200px;
+}
+
+.time-series-y-axis {
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.time-series-plot {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+  border-left: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  padding-top: 10px;
+  overflow-x: auto;
+}
+
+.time-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 30px;
+  height: 100%;
+}
+
+.time-bar {
+  width: 10px;
+  background-color: #3b82f6;
+  border-radius: 2px 2px 0 0;
+  margin-bottom: 2px;
+  transition: height 0.5s ease;
+}
+
+.time-label {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  transform: rotate(-45deg);
+  white-space: nowrap;
+  margin-top: 5px;
+}
+
+/* Optimization Tips */
+.optimization-tips {
+  padding: 10px;
+}
+
+.potential-savings {
+  display: flex;
+  align-items: center;
+  background-color: #ecfdf5;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-left: 4px solid #10b981;
+}
+
+.savings-icon {
+  font-size: 2rem;
+  margin-right: 15px;
+}
+
+.savings-details p {
+  margin: 0;
+}
+
+.savings-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-top: 5px !important;
+}
+
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.optimization-tip {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 15px;
+  border-left: 4px solid #3b82f6;
+}
+
+.tip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.tip-header h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.savings-potential {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.savings-potential.high {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.savings-potential.medium {
+  background-color: #fef9c3;
+  color: #a16207;
+}
+
+.savings-potential.low {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.tip-description {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.tip-implementation {
+  font-size: 0.85rem;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* Transactions Table */
+.gas-transactions-table {
+  overflow: hidden;
+}
+
+.transactions-table-container {
+  overflow-x: auto;
+}
+
+.gas-transactions-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.gas-transactions-table th {
+  background-color: #f8fafc;
+  padding: 10px;
+  text-align: left;
+  color: #64748b;
+  font-weight: 500;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.gas-transactions-table td {
+  padding: 10px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #475569;
+}
+
+.gas-transactions-table tr:last-child td {
+  border-bottom: none;
+}
+
+.gas-transactions-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.tx-hash {
+  font-family: monospace;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.tx-hash:hover {
+  text-decoration: underline;
+}
+
+.high-efficiency {
+  color: #15803d !important;
+}
+
+.medium-efficiency {
+  color: #a16207 !important;
+}
+
+.low-efficiency {
+  color: #b91c1c !important;
+}
+
+/* Gas Trend Insights */
+.gas-trend-insights {
+  margin-top: 20px;
+}
+
+.insights-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.insight-card {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+}
+
+.insight-title {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 5px;
+}
+
+.insight-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 5px;
+}
+
+.insight-description {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.analysis-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  color: #666;
+  font-size: 0.85rem;
+}

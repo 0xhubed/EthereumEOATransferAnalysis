@@ -15,6 +15,7 @@ import NetworkEvolution from './components/NetworkEvolution';
 import SimplifiedGraph3D from './components/SimplifiedGraph3D';
 import PatternAnalysis from './components/PatternAnalysis';
 import ContractInteractions from './components/ContractInteractions';
+import GasUsageAnalysis from './components/GasUsageAnalysis';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
@@ -41,6 +42,7 @@ function App() {
   // Analysis options
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [showContractAnalysis, setShowContractAnalysis] = useState(false);
+  const [showGasAnalysis, setShowGasAnalysis] = useState(false);
   
   // Time filter options
   const [timeFilter, setTimeFilter] = useState({
@@ -205,6 +207,7 @@ function App() {
       // Reset analysis state when loading new data
       setShowAnalysis(false);
       setShowContractAnalysis(false);
+      setShowGasAnalysis(false);
       
       // Auto-save this search
       saveSearch(searchAddress);
@@ -528,7 +531,10 @@ function App() {
                       className={`analysis-toggle ${showAnalysis ? 'active' : ''}`} 
                       onClick={() => {
                         setShowAnalysis(!showAnalysis);
-                        if (!showAnalysis) setShowContractAnalysis(false);
+                        if (!showAnalysis) {
+                          setShowContractAnalysis(false);
+                          setShowGasAnalysis(false);
+                        }
                       }}
                     >
                       {showAnalysis ? 'Hide Pattern Analysis' : 'Show Pattern Analysis'}
@@ -537,10 +543,25 @@ function App() {
                       className={`analysis-toggle ${showContractAnalysis ? 'active' : ''}`} 
                       onClick={() => {
                         setShowContractAnalysis(!showContractAnalysis);
-                        if (!showContractAnalysis) setShowAnalysis(false);
+                        if (!showContractAnalysis) {
+                          setShowAnalysis(false);
+                          setShowGasAnalysis(false);
+                        }
                       }}
                     >
                       {showContractAnalysis ? 'Hide Contract Analysis' : 'Show Contract Analysis'}
+                    </button>
+                    <button 
+                      className={`analysis-toggle ${showGasAnalysis ? 'active' : ''}`} 
+                      onClick={() => {
+                        setShowGasAnalysis(!showGasAnalysis);
+                        if (!showGasAnalysis) {
+                          setShowAnalysis(false);
+                          setShowContractAnalysis(false);
+                        }
+                      }}
+                    >
+                      {showGasAnalysis ? 'Hide Gas Analysis' : 'Show Gas Analysis'}
                     </button>
                   </div>
                   
@@ -554,6 +575,13 @@ function App() {
                   
                   {showContractAnalysis && (
                     <ContractInteractions 
+                      searchAddress={searchAddress}
+                    />
+                  )}
+
+                  {showGasAnalysis && (
+                    <GasUsageAnalysis
+                      transactions={transactions}
                       searchAddress={searchAddress}
                     />
                   )}
