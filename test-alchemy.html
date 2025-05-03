@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alchemy SDK Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/alchemy-sdk@latest/dist/alchemy-sdk.min.js"></script>
+</head>
+<body>
+    <h1>Alchemy SDK Test</h1>
+    <div id="result"></div>
+    <script>
+        async function testAlchemySDK() {
+            const resultDiv = document.getElementById('result');
+            try {
+                // Get API key from localStorage (you should set this manually in browser console)
+                const apiKey = prompt("Enter your Alchemy API key:");
+                if (!apiKey) {
+                    resultDiv.innerHTML = "No API key provided";
+                    return;
+                }
+                
+                // Initialize Alchemy
+                const { Alchemy, Network } = window.AlchemySDK;
+                const settings = {
+                    apiKey: apiKey,
+                    network: Network.ETH_MAINNET,
+                };
+                
+                const alchemy = new Alchemy(settings);
+                resultDiv.innerHTML = "Initialized Alchemy SDK. Fetching block number...";
+                
+                // Test with a simple API call
+                const blockNumber = await alchemy.core.getBlockNumber();
+                resultDiv.innerHTML = `Success! Current block number: ${blockNumber}`;
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+                console.error(error);
+            }
+        }
+        
+        testAlchemySDK();
+    </script>
+</body>
+</html>

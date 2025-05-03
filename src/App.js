@@ -16,6 +16,9 @@ import SimplifiedGraph3D from './components/SimplifiedGraph3D';
 import PatternAnalysis from './components/PatternAnalysis';
 import ContractInteractions from './components/ContractInteractions';
 import GasUsageAnalysis from './components/GasUsageAnalysis';
+import IdentityClustering from './components/IdentityClustering';
+import TransactionHeatMap from './components/TransactionHeatMap';
+import SavedSearches from './components/SavedSearches';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
@@ -37,12 +40,13 @@ function App() {
   const [selectedPartner, setSelectedPartner] = useState(null);
   
   // Visualization options
-  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d'
+  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d', 'heatmap'
   
   // Analysis options
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [showContractAnalysis, setShowContractAnalysis] = useState(false);
   const [showGasAnalysis, setShowGasAnalysis] = useState(false);
+  const [showIdentityClustering, setShowIdentityClustering] = useState(false);
   
   // Time filter options
   const [timeFilter, setTimeFilter] = useState({
@@ -63,6 +67,7 @@ function App() {
   const [savedSearches, setSavedSearches] = useState([]);
   const [showSavedSearches, setShowSavedSearches] = useState(false);
   const [searchNameInput, setSearchNameInput] = useState('');
+  const [showSavedSearchManager, setShowSavedSearchManager] = useState(false);
   
   // Sorting
   const [sortConfig, setSortConfig] = useState({
@@ -120,7 +125,19 @@ function App() {
   
   const handleSaveSearch = () => {
     if (searchAddress && validateAddress(searchAddress)) {
-      saveSearch(searchAddress, searchNameInput);
+      // Save search with extended information
+      saveSearch(searchAddress, searchNameInput, {
+        timeFilter: timeFilter.enabled ? {
+          startBlock: timeFilter.startBlock,
+          endBlock: timeFilter.endBlock
+        } : null,
+        visualizationMode: visualizationMode,
+        lastResults: {
+          partnerCount: transferPartners.length,
+          timestamp: new Date().toISOString()
+        }
+      });
+      
       setSavedSearches(getSavedSearches());
       setSearchNameInput('');
     }
@@ -134,6 +151,36 @@ function App() {
   const handleLoadSearch = (address) => {
     setSearchAddress(address);
     setShowSavedSearches(false);
+  };
+  
+  const handleSelectSavedSearch = (search) => {
+    setSearchAddress(search.address);
+    
+    // Restore time filters if available
+    if (search.timeFilter) {
+      setTimeFilter({
+        enabled: true,
+        startBlock: search.timeFilter.startBlock || '',
+        endBlock: search.timeFilter.endBlock || ''
+      });
+    } else {
+      setTimeFilter({
+        enabled: false,
+        startBlock: '',
+        endBlock: ''
+      });
+    }
+    
+    // Set visualization mode if available
+    if (search.visualizationMode) {
+      setVisualizationMode(search.visualizationMode);
+    }
+    
+    // Close the saved search manager
+    setShowSavedSearchManager(false);
+    
+    // Fetch transfer history with the loaded search parameters
+    fetchTransferHistory();
   };
   
   const fetchTransferHistory = async () => {
@@ -208,9 +255,20 @@ function App() {
       setShowAnalysis(false);
       setShowContractAnalysis(false);
       setShowGasAnalysis(false);
+      setShowIdentityClustering(false);
       
-      // Auto-save this search
-      saveSearch(searchAddress);
+      // Auto-save this search with extended information
+      saveSearch(searchAddress, '', {
+        timeFilter: timeFilter.enabled ? {
+          startBlock: timeFilter.startBlock,
+          endBlock: timeFilter.endBlock
+        } : null,
+        visualizationMode: visualizationMode,
+        lastResults: {
+          partnerCount: partners.length,
+          timestamp: new Date().toISOString()
+        }
+      });
       setSavedSearches(getSavedSearches());
     } catch (error) {
       console.error('Error fetching transfer history:', error);
@@ -319,13 +377,22 @@ function App() {
                 <h3 className="text-lg font-medium">Search Address</h3>
                 
                 {/* Saved Searches Button */}
-                <Button 
-                  onClick={() => setShowSavedSearches(!showSavedSearches)} 
-                  variant="outline"
-                  size="sm"
-                >
-                  {showSavedSearches ? 'Hide Saved Searches' : 'Show Saved Searches'}
-                </Button>
+                <div className="flex space-x-2">
+                  <Button 
+                    onClick={() => setShowSavedSearches(!showSavedSearches)} 
+                    variant="outline"
+                    size="sm"
+                  >
+                    {showSavedSearches ? 'Hide Saved Searches' : 'Quick Search History'}
+                  </Button>
+                  <Button 
+                    onClick={() => setShowSavedSearchManager(true)} 
+                    variant="secondary"
+                    size="sm"
+                  >
+                    Manage Saved Searches
+                  </Button>
+                </div>
               </div>
               
               {/* Saved Searches Dropdown */}
@@ -482,6 +549,12 @@ function App() {
                     >
                       3D Visualization
                     </button>
+                    <button
+                      className={visualizationMode === 'heatmap' ? 'active' : ''}
+                      onClick={() => setVisualizationMode('heatmap')}
+                    >
+                      Heat Map
+                    </button>
                   </div>
                 </div>
               )}
@@ -515,6 +588,13 @@ function App() {
                 />
               )}
               
+              {transferPartners.length > 0 && visualizationMode === 'heatmap' && (
+                <TransactionHeatMap
+                  transferPartners={transferPartners}
+                  searchAddress={searchAddress}
+                />
+              )}
+              
               {/* Advanced Analytics */}
               {transferPartners.length > 0 && (
                 <div className="analytics-section">
@@ -526,6 +606,7 @@ function App() {
                         if (!showAnalysis) {
                           setShowContractAnalysis(false);
                           setShowGasAnalysis(false);
+                          setShowIdentityClustering(false);
                         }
                       }}
                     >
@@ -538,6 +619,7 @@ function App() {
                         if (!showContractAnalysis) {
                           setShowAnalysis(false);
                           setShowGasAnalysis(false);
+                          setShowIdentityClustering(false);
                         }
                       }}
                     >
@@ -550,10 +632,24 @@ function App() {
                         if (!showGasAnalysis) {
                           setShowAnalysis(false);
                           setShowContractAnalysis(false);
+                          setShowIdentityClustering(false);
                         }
                       }}
                     >
                       {showGasAnalysis ? 'Hide Gas Analysis' : 'Show Gas Analysis'}
+                    </button>
+                    <button 
+                      className={`analysis-toggle ${showIdentityClustering ? 'active' : ''}`} 
+                      onClick={() => {
+                        setShowIdentityClustering(!showIdentityClustering);
+                        if (!showIdentityClustering) {
+                          setShowAnalysis(false);
+                          setShowContractAnalysis(false);
+                          setShowGasAnalysis(false);
+                        }
+                      }}
+                    >
+                      {showIdentityClustering ? 'Hide Identity Clustering' : 'Show Identity Clustering'}
                     </button>
                   </div>
                   
@@ -573,6 +669,14 @@ function App() {
 
                   {showGasAnalysis && (
                     <GasUsageAnalysis
+                      transactions={transactions}
+                      searchAddress={searchAddress}
+                    />
+                  )}
+                  
+                  {showIdentityClustering && (
+                    <IdentityClustering
+                      transferPartners={transferPartners}
                       transactions={transactions}
                       searchAddress={searchAddress}
                     />
@@ -714,6 +818,13 @@ function App() {
         <TransferDetails 
           partner={selectedPartner} 
           onClose={closeTransferDetails} 
+        />
+      )}
+      
+      {showSavedSearchManager && (
+        <SavedSearches 
+          onSelectSearch={handleSelectSavedSearch}
+          onClose={() => setShowSavedSearchManager(false)}
         />
       )}
     </div>

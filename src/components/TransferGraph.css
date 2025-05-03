@@ -17,6 +17,53 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.graph-container {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+}
+
+.react-d3-graph-container {
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  left: 0 !important;
+}
+
+.graph-container > div,
+#transfer-graph {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#transfer-graph-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.graph-wrapper svg,
+.react-d3-graph-container svg {
+  max-width: 100%;
+  height: auto;
+  display: block !important;
+  margin: 0 auto !important;
+  left: 0 !important;
+  right: 0 !important;
+  position: relative !important;
+  transform-origin: center center !important;
 }
 
 .graph-error {
@@ -33,11 +80,6 @@
   text-align: center;
   color: #666;
   font-size: 0.9rem;
-}
-
-.graph-wrapper svg {
-  max-width: 100%;
-  height: auto;
 }
 
 .legend {
@@ -66,10 +108,34 @@
 
 .search-address {
   background-color: #ff6347;
+  transform: rotate(45deg);
+  border: 2px solid white;
 }
 
 .partner-address {
   background-color: #1f77b4;
+}
+
+.anomaly-address {
+  background-color: #db4437;
+  border: 2px solid #ffcc00;
+}
+
+.node-triangle {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 12px solid #db4437;
+  margin-right: 8px;
+}
+
+.node-square {
+  width: 12px;
+  height: 12px;
+  background-color: #db4437;
+  margin-right: 8px;
+  border: 2px solid #ffcc00;
 }
 
 .link-line {
@@ -98,6 +164,56 @@
   margin: 5px 0;
 }
 
+/* Tooltip styling */
+.node-tooltip {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  max-width: 220px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  pointer-events: none; /* Pass through mouse events */
+}
+
+.tooltip-address {
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #f0f0f0;
+}
+
+.tooltip-value {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #ffcc00;
+}
+
+.tooltip-sent {
+  color: #ff9999;
+}
+
+.tooltip-received {
+  color: #99ff99;
+}
+
+.tooltip-anomaly {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffcc00;
+  display: flex;
+  align-items: center;
+}
+
+.anomaly-icon {
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.anomaly-text {
+  font-size: 12px;
+}
+
 @media (max-width: 768px) {
   .graph-wrapper {
     height: 400px;
@@ -106,5 +222,19 @@
   .legend {
     flex-direction: column;
     gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .legend-item {
+    margin-bottom: 5px;
+  }
+  
+  .transfer-graph-container {
+    padding: 10px;
+  }
+  
+  .legend-note p {
+    margin: 3px 0;
+    font-size: 0.75rem;
   }
 }

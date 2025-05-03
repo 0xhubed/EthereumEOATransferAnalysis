@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "alchemy-sdk": "^2.10.1",
+    "@react-three/drei": "^10.0.7",
+    "alchemy-sdk": "^3.5.7",
     "d3": "^7.9.0",
     "react": "^18.2.0",
     "react-d3-graph": "^2.6.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "react-three-fiber": "^6.0.13",
+    "three": "^0.176.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,5 +36,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@shadcn/ui": "^0.0.4",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.3"
   }
 }

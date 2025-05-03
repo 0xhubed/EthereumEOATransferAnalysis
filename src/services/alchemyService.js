@@ -96,8 +96,8 @@ export const saveAddressAnnotation = (address, annotation) => {
   }
 };
 
-// Save a search to localStorage
-export const saveSearch = (address, searchName = '') => {
+// Save a search to localStorage with extended information
+export const saveSearch = (address, searchName = '', options = {}) => {
   try {
     const savedSearches = getSavedSearches();
     const currentDate = new Date().toISOString();
@@ -105,15 +105,36 @@ export const saveSearch = (address, searchName = '') => {
     // If searchName is empty, use date as name
     const name = searchName || `Search on ${new Date().toLocaleString()}`;
     
-    savedSearches.push({
+    // Check if this address already exists in saved searches
+    const existingSearchIndex = savedSearches.findIndex(search => 
+      search.address.toLowerCase() === address.toLowerCase() && 
+      search.timeFilter?.startBlock === options.timeFilter?.startBlock &&
+      search.timeFilter?.endBlock === options.timeFilter?.endBlock
+    );
+    
+    const searchData = {
       id: Date.now(),  // Unique identifier
       name: name,
       address: address,
-      date: currentDate
-    });
+      date: currentDate,
+      timeFilter: options.timeFilter || null,
+      visualizationMode: options.visualizationMode || 'standard',
+      notes: options.notes || '',
+      tags: options.tags || [],
+      lastResults: options.lastResults || null
+    };
     
-    // Keep only the most recent 20 searches
-    const limitedSearches = savedSearches.slice(-20);
+    if (existingSearchIndex >= 0) {
+      // Update existing search
+      searchData.id = savedSearches[existingSearchIndex].id; // Preserve original ID
+      savedSearches[existingSearchIndex] = searchData;
+    } else {
+      // Add new search
+      savedSearches.push(searchData);
+    }
+    
+    // Keep only the most recent 30 searches
+    const limitedSearches = savedSearches.slice(-30);
     
     localStorage.setItem('savedSearches', JSON.stringify(limitedSearches));
     return true;
@@ -123,11 +144,51 @@ export const saveSearch = (address, searchName = '') => {
   }
 };
 
-// Get saved searches from localStorage
-export const getSavedSearches = () => {
+// Get saved searches from localStorage with optional filtering
+export const getSavedSearches = (filters = {}) => {
   try {
     const saved = localStorage.getItem('savedSearches');
-    return saved ? JSON.parse(saved) : [];
+    let searches = saved ? JSON.parse(saved) : [];
+    
+    // Apply filters if provided
+    if (filters) {
+      // Filter by address
+      if (filters.address) {
+        searches = searches.filter(search => 
+          search.address.toLowerCase().includes(filters.address.toLowerCase())
+        );
+      }
+      
+      // Filter by tag
+      if (filters.tag) {
+        searches = searches.filter(search => 
+          search.tags && search.tags.includes(filters.tag)
+        );
+      }
+      
+      // Filter by name
+      if (filters.name) {
+        searches = searches.filter(search => 
+          search.name.toLowerCase().includes(filters.name.toLowerCase())
+        );
+      }
+      
+      // Filter by date range
+      if (filters.dateFrom) {
+        const fromDate = new Date(filters.dateFrom);
+        searches = searches.filter(search => new Date(search.date) >= fromDate);
+      }
+      
+      if (filters.dateTo) {
+        const toDate = new Date(filters.dateTo);
+        searches = searches.filter(search => new Date(search.date) <= toDate);
+      }
+    }
+    
+    // Sort by date (newest first)
+    searches.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    return searches;
   } catch (error) {
     console.error('Error loading saved searches:', error);
     return [];
@@ -144,6 +205,83 @@ export const deleteSavedSearch = (searchId) => {
   } catch (error) {
     console.error('Error deleting saved search:', error);
     return false;
+  }
+};
+
+// Add tags to a saved search
+export const addSearchTags = (searchId, tags = []) => {
+  try {
+    const savedSearches = getSavedSearches();
+    const searchIndex = savedSearches.findIndex(search => search.id === searchId);
+    
+    if (searchIndex === -1) return false;
+    
+    // Get existing tags and add new ones without duplicates
+    const existingTags = savedSearches[searchIndex].tags || [];
+    const uniqueTags = [...new Set([...existingTags, ...tags])];
+    
+    savedSearches[searchIndex].tags = uniqueTags;
+    localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
+    return true;
+  } catch (error) {
+    console.error('Error adding tags to search:', error);
+    return false;
+  }
+};
+
+// Remove tags from a saved search
+export const removeSearchTag = (searchId, tag) => {
+  try {
+    const savedSearches = getSavedSearches();
+    const searchIndex = savedSearches.findIndex(search => search.id === searchId);
+    
+    if (searchIndex === -1) return false;
+    
+    // Filter out the tag to remove
+    const updatedTags = (savedSearches[searchIndex].tags || []).filter(t => t !== tag);
+    
+    savedSearches[searchIndex].tags = updatedTags;
+    localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
+    return true;
+  } catch (error) {
+    console.error('Error removing tag from search:', error);
+    return false;
+  }
+};
+
+// Update saved search notes
+export const updateSearchNotes = (searchId, notes) => {
+  try {
+    const savedSearches = getSavedSearches();
+    const searchIndex = savedSearches.findIndex(search => search.id === searchId);
+    
+    if (searchIndex === -1) return false;
+    
+    savedSearches[searchIndex].notes = notes;
+    localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
+    return true;
+  } catch (error) {
+    console.error('Error updating search notes:', error);
+    return false;
+  }
+};
+
+// Get all unique tags from saved searches
+export const getAllSearchTags = () => {
+  try {
+    const savedSearches = getSavedSearches();
+    const allTags = savedSearches.reduce((tags, search) => {
+      if (search.tags && Array.isArray(search.tags)) {
+        return [...tags, ...search.tags];
+      }
+      return tags;
+    }, []);
+    
+    // Return unique tags
+    return [...new Set(allTags)];
+  } catch (error) {
+    console.error('Error getting all search tags:', error);
+    return [];
   }
 };
 

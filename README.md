@@ -4,20 +4,32 @@ A web application that allows users to explore transfer history between Ethereum
 
 > **Note:** This project was generated with [Claude Code](https://claude.ai/code) as a learning project to demonstrate AI-assisted software development.
 
-## Features
+## Core Features
 
 - Search for any Ethereum address transfer history
 - Display all EOAs that have transferred ETH with the searched address
-- View detailed transaction history between addresses
+- View detailed transaction history between addresses 
 - See total amounts sent and received between addresses
+- Save and manage search history with detailed notes and tags
+- Export transaction data in various formats
 
-## Advanced Visualization Features
+## Data Visualization Features
 
 - **Network Graph Visualization**: Interactive graph showing relationships between addresses
-- **Time-Based Analysis**: Timeline visualization showing how transfer patterns evolve over time
-- **Network Evolution**: Animated visualization showing how a transaction network grows over time
-- **3D Visualization**: Immersive 3D exploration of complex transaction networks
-- **Anomaly Highlighting**: Visual emphasis on unusual transactions that deviate from normal patterns
+- **Time-Based Analysis**: ✅ Timeline visualization showing how transfer patterns evolve over time
+- **Network Evolution**: ✅ Animated visualization showing how a transaction network grows over time
+- **3D Visualization**: ✅ Immersive 3D exploration of complex transaction networks
+- **Heat Maps**: ✅ Geographic distribution visualization of transaction patterns
+- **Anomaly Highlighting**: ✅ Visual emphasis on unusual transactions that deviate from normal patterns
+
+## Advanced Analytics Features
+
+- **Transaction Pattern Recognition**: ✅ Automated identification of common transaction patterns
+- **Smart Contract Interaction Analysis**: ✅ Visualization of how addresses interact with smart contracts
+- **Wallet Profiling**: ✅ Automatic categorization of wallets based on behavior (trader, hodler, etc.)
+- **Risk Scoring**: ✅ Assigns risk scores to addresses based on transaction patterns
+- **Identity Clustering**: ✅ Groups addresses that likely belong to the same entity
+- **Gas Usage Analysis**: ✅ Visualizes gas spending patterns and efficiency
 
 ## Technology Stack
 
@@ -70,6 +82,12 @@ A web application that allows users to explore transfer history between Ethereum
    - Timeline View: Time-based transaction history
    - Network Evolution: See how the transaction network evolves over time
    - 3D Visualization: Explore transactions in 3D space
+   - Heat Map: View geographic distribution of transactions
+6. Explore advanced analytics features:
+   - Pattern Analysis: View detected transaction patterns and wallet behavior profiles
+   - Contract Interactions: Analyze how addresses interact with smart contracts
+   - Gas Usage Analysis: Examine gas spending patterns and efficiency
+   - Identity Clustering: See groups of addresses that likely belong to the same entity
 
 ## Obtaining an Alchemy API Key
 
@@ -101,7 +119,7 @@ This project uses a custom integration of shadcn-inspired UI components:
 
 4. For adding more components, follow the pattern in `/src/components/ui/`
 
-## Advanced Visualizations
+## Advanced Visualizations & Analytics
 
 ### Time-Based Analysis
 The timeline visualization allows users to see how transactions occur over time. Users can:
@@ -125,6 +143,35 @@ The 3D view provides an immersive way to explore complex transaction networks:
 - Visual indicators for anomalous transactions
 - Depth perception to better understand complex networks
 
+### Heat Maps
+The geographic distribution visualization provides insights into transaction patterns:
+- Color-coded regions based on transaction density
+- Multiple visualization modes (volume, count, anomalies)
+- Interactive regions with detailed statistics
+- Simulated geographic distribution for demonstration purposes
+
+### Transaction Pattern Analysis
+Advanced analytics to identify common transaction behaviors:
+- Detection of periodic/regular transfers
+- Round number pattern identification
+- Distribution and collection pattern detection
+- Identification of abnormally large transfers
+- Burst activity and cyclical behavior recognition
+
+### Wallet Profiling & Risk Analysis
+Automated behavior analysis provides insights into wallet characteristics:
+- Wallet type classification (trader, hodler, distributor, etc.)
+- Behavioral pattern identification
+- Risk scoring based on transaction patterns
+- Anomaly detection and flagging
+
+### Identity Clustering
+Groups addresses that likely belong to the same entity:
+- Multiple clustering algorithms (temporal, co-spending, behavioral)
+- Confidence scoring for relationship strength
+- Detailed evidence for clustering decisions
+- Cluster-level risk assessment
+
 ## License
 
 MIT
@@ -132,3 +179,15 @@ MIT
 ---
 
 *This project was built with the assistance of Claude Code, Anthropic's AI coding assistant. It demonstrates how AI-assisted development can rapidly implement complex visualizations and data analysis tools. The project serves as a learning resource for blockchain data analysis and AI-assisted software development.*
+
+## Current Development Status
+
+As of the latest update, we've implemented:
+
+- ✅ Core transfer history exploration functionality
+- ✅ All planned data visualization features (Network Graph, Timeline, Evolution, 3D, Heat Maps)
+- ✅ Advanced analytics (Pattern Recognition, Contract Analysis, Wallet Profiling, Risk Scoring)
+- ✅ Identity Clustering for address relationship analysis
+- ✅ Search history management and data export capabilities
+
+See the [ENHANCEMENT_IDEAS.md](./ENHANCEMENT_IDEAS.md) file for a complete roadmap of implemented and planned features.
