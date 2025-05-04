@@ -8,7 +8,7 @@
 - ✅ **3D Visualization**: Implement a 3D graph option for more immersive exploration of complex networks
 - ✅ **Anomaly Highlighting**: Visually emphasize unusual transactions that deviate from normal patterns
 - **Sankey Diagrams**: Visualize fund flows between multiple addresses over time
-- **Tree Maps**: Represent hierarchical transaction data showing relative sizes of transfers
+- ✅ **Tree Maps**: Represent hierarchical transaction data showing relative sizes of transfers
 - **Circular Packing**: Alternative visualization for showing grouped addresses
 - **Motion Charts**: Dynamic visualization showing changes in metrics over time
 
