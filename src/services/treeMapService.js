@@ -155,7 +155,7 @@ export const processTransactionsForTreeMap = (transactions, groupBy = 'address',
         const txNode = {
           name: tx.hash ? tx.hash.substring(0, 10) + '...' : 'Tx',
           value: value,
-          details: includeDetails ? \`From: \${tx.from}\nTo: \${tx.to}\nValue: \${tx.value}\` : undefined
+          details: includeDetails ? `From: ${tx.from}\nTo: ${tx.to}\nValue: ${tx.value}` : undefined
         };
         
         periodNode.children.push(txNode);
@@ -420,7 +420,7 @@ export const processContractInteractionsForTreeMap = (contractData, options = {}
           name: interaction.from,
           value: 0,
           address: interaction.from,
-          details: includeDetails ? \`Caller of \${methodName}\` : undefined
+          details: includeDetails ? `Caller of ${methodName}` : undefined
         };
         methodNode.children.push(callerExists);
       }
