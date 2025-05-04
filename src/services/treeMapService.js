@@ -70,7 +70,7 @@ export const processTransactionsForTreeMap = (transactions, groupBy = 'address',
             name: to,
             value: 0,
             address: to,
-            details: includeDetails ? \`Recipient of \${fromNode.name}\` : undefined
+            details: includeDetails ? `Recipient of ${fromNode.name}` : undefined
           };
           fromNode.children.push(recipientExists);
         }
@@ -131,10 +131,10 @@ export const processTransactionsForTreeMap = (transactions, groupBy = 'address',
               timeKey = timestamp.toISOString().split('T')[0]; // YYYY-MM-DD
               break;
             case 'month':
-              timeKey = \`\${timestamp.getFullYear()}-\${String(timestamp.getMonth() + 1).padStart(2, '0')}\`; // YYYY-MM
+              timeKey = `${timestamp.getFullYear()}-${String(timestamp.getMonth() + 1).padStart(2, '0')}`; // YYYY-MM
               break;
             case 'year':
-              timeKey = \`\${timestamp.getFullYear()}\`; // YYYY
+              timeKey = `${timestamp.getFullYear()}`; // YYYY
               break;
           }
         }
@@ -212,7 +212,7 @@ export const processTransactionsForTreeMap = (transactions, groupBy = 'address',
           const txNode = {
             name: tx.hash ? tx.hash.substring(0, 10) + '...' : 'Tx',
             value: value,
-            details: includeDetails ? \`From: \${tx.from}\nTo: \${tx.to}\` : undefined
+            details: includeDetails ? `From: ${tx.from}\nTo: ${tx.to}` : undefined
           };
           
           range.children.push(txNode);
@@ -265,7 +265,7 @@ export const processTransactionsForTreeMap = (transactions, groupBy = 'address',
           const txNode = {
             name: tx.hash ? tx.hash.substring(0, 10) + '...' : 'Tx',
             value: value,
-            details: includeDetails ? \`From: \${tx.from}\nTo: \${tx.to}\` : undefined
+            details: includeDetails ? `From: ${tx.from}\nTo: ${tx.to}` : undefined
           };
           
           category.children.push(txNode);

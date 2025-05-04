@@ -91,7 +91,7 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
       .enter()
       .append('g')
       .attr('class', 'tree-map-node-group')
-      .attr('transform', d => \`translate(\${d.x0},\${d.y0})\`);
+      .attr('transform', d => `translate(${d.x0},${d.y0})`);
     
     // Add rectangle for each node
     nodes
@@ -110,22 +110,22 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
       .on('mouseover', (event, d) => {
         const tooltip = d3.select(tooltipRef.current);
         tooltip.style('visibility', 'visible')
-          .html(\`
+          .html(`
             <div>
-              <strong>\${d.data.name}</strong><br/>
-              Value: \${d.value.toLocaleString()}<br/>
-              \${d.data.address ? \`Address: \${d.data.address.substring(0, 10)}...\` : ''}
-              \${d.data.details ? \`<br/>\${d.data.details}\` : ''}
+              <strong>${d.data.name}</strong><br/>
+              Value: ${d.value.toLocaleString()}<br/>
+              ${d.data.address ? `Address: ${d.data.address.substring(0, 10)}...` : ''}
+              ${d.data.details ? `<br/>${d.data.details}` : ''}
             </div>
-          \`)
-          .style('left', \`\${event.pageX + 10}px\`)
-          .style('top', \`\${event.pageY + 10}px\`);
+          `)
+          .style('left', `${event.pageX + 10}px`)
+          .style('top', `${event.pageY + 10}px`);
       })
       .on('mousemove', (event) => {
         const tooltip = d3.select(tooltipRef.current);
         tooltip
-          .style('left', \`\${event.pageX + 10}px\`)
-          .style('top', \`\${event.pageY + 10}px\`);
+          .style('left', `${event.pageX + 10}px`)
+          .style('top', `${event.pageY + 10}px`);
       })
       .on('mouseout', () => {
         d3.select(tooltipRef.current).style('visibility', 'hidden');
@@ -161,7 +161,7 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
     // Add title for each node
     nodes
       .append('title')
-      .text(d => \`\${d.data.name}: \${d.value}\`);
+      .text(d => `${d.data.name}: ${d.value}`);
   };
 
   const handleBreadcrumbClick = (index) => {
