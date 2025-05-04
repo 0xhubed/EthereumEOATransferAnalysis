@@ -1,0 +1,89 @@
+.tree-map-container {
+  width: 100%;
+  height: 600px;
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tree-map-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.tree-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tree-map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.tree-map-legend-color {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+}
+
+.tree-map-tooltip {
+  position: absolute;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 10;
+  font-size: 14px;
+  max-width: 300px;
+}
+
+.tree-map-node {
+  stroke: #fff;
+  stroke-width: 1px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.tree-map-node:hover {
+  opacity: 0.8;
+}
+
+.tree-map-node-text {
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.tree-map-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.tree-map-breadcrumb-item {
+  cursor: pointer;
+  color: #4f46e5;
+}
+
+.tree-map-breadcrumb-item:hover {
+  text-decoration: underline;
+}
+
+.tree-map-no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #6b7280;
+  font-size: 16px;
+}

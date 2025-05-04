@@ -18,10 +18,12 @@ import ContractInteractions from './components/ContractInteractions';
 import GasUsageAnalysis from './components/GasUsageAnalysis';
 import IdentityClustering from './components/IdentityClustering';
 import TransactionHeatMap from './components/TransactionHeatMap';
+import TreeMapVisualization from './components/TreeMapVisualization';
 import SavedSearches from './components/SavedSearches';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
+import { generateSampleTreeMapData, processTransfersForTreeMap } from './services/treeMapService';
 
 function App() {
   const [error, setError] = useState('');
@@ -40,7 +42,7 @@ function App() {
   const [selectedPartner, setSelectedPartner] = useState(null);
   
   // Visualization options
-  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d', 'heatmap'
+  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d', 'heatmap', 'treemap'
   
   // Analysis options
   const [showAnalysis, setShowAnalysis] = useState(false);
@@ -555,6 +557,12 @@ function App() {
                     >
                       Heat Map
                     </button>
+                    <button
+                      className={visualizationMode === 'treemap' ? 'active' : ''}
+                      onClick={() => setVisualizationMode('treemap')}
+                    >
+                      Tree Map
+                    </button>
                   </div>
                 </div>
               )}
@@ -592,6 +600,17 @@ function App() {
                 <TransactionHeatMap
                   transferPartners={transferPartners}
                   searchAddress={searchAddress}
+                />
+              )}
+              
+              {transferPartners.length > 0 && visualizationMode === 'treemap' && (
+                <TreeMapVisualization
+                  data={processTransfersForTreeMap(transferPartners, {
+                    rootName: `${formatAddress(searchAddress)} Transfers`,
+                    groupBy: 'address'
+                  })}
+                  title={`Transaction Tree Map for ${formatAddress(searchAddress)}`}
+                  colorScheme="viridis"
                 />
               )}
               
