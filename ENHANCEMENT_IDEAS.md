@@ -21,7 +21,7 @@
 - ✅ **Identity Clustering**: Group addresses that likely belong to the same entity
 - ✅ **Gas Usage Analysis**: Visualize gas spending patterns and efficiency
 - **Temporal Anomaly Detection**: Identify unusual patterns specific to certain time periods
-- **Profit/Loss Analysis**: Track ROI for addresses across their transaction history
+- ✅ **Profit/Loss Analysis**: Track ROI for addresses across their transaction history
 - **Cross-Chain Activity Correlation**: Find patterns across multiple blockchains for the same entity
 - **Money Laundering Detection**: Specialized analysis focusing on common laundering patterns
 - **Smart Contract Risk Analysis**: Evaluate security risks of smart contracts
