@@ -19,6 +19,7 @@ import GasUsageAnalysis from './components/GasUsageAnalysis';
 import IdentityClustering from './components/IdentityClustering';
 import TransactionHeatMap from './components/TransactionHeatMap';
 import TreeMapVisualization from './components/TreeMapVisualization';
+import ProfitLossAnalysis from './components/ProfitLossAnalysis';
 import SavedSearches from './components/SavedSearches';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
@@ -49,6 +50,7 @@ function App() {
   const [showContractAnalysis, setShowContractAnalysis] = useState(false);
   const [showGasAnalysis, setShowGasAnalysis] = useState(false);
   const [showIdentityClustering, setShowIdentityClustering] = useState(false);
+  const [showProfitLossAnalysis, setShowProfitLossAnalysis] = useState(false);
   
   // Time filter options
   const [timeFilter, setTimeFilter] = useState({
@@ -258,6 +260,7 @@ function App() {
       setShowContractAnalysis(false);
       setShowGasAnalysis(false);
       setShowIdentityClustering(false);
+      setShowProfitLossAnalysis(false);
       
       // Auto-save this search with extended information
       saveSearch(searchAddress, '', {
@@ -637,6 +640,7 @@ function App() {
                           setShowContractAnalysis(false);
                           setShowGasAnalysis(false);
                           setShowIdentityClustering(false);
+                          setShowProfitLossAnalysis(false);
                         }
                       }}
                     >
@@ -650,6 +654,7 @@ function App() {
                           setShowAnalysis(false);
                           setShowGasAnalysis(false);
                           setShowIdentityClustering(false);
+                          setShowProfitLossAnalysis(false);
                         }
                       }}
                     >
@@ -663,6 +668,7 @@ function App() {
                           setShowAnalysis(false);
                           setShowContractAnalysis(false);
                           setShowIdentityClustering(false);
+                          setShowProfitLossAnalysis(false);
                         }
                       }}
                     >
@@ -676,10 +682,25 @@ function App() {
                           setShowAnalysis(false);
                           setShowContractAnalysis(false);
                           setShowGasAnalysis(false);
+                          setShowProfitLossAnalysis(false);
                         }
                       }}
                     >
                       {showIdentityClustering ? 'Hide Identity Clustering' : 'Show Identity Clustering'}
+                    </button>
+                    <button 
+                      className={`analysis-toggle ${showProfitLossAnalysis ? 'active' : ''}`} 
+                      onClick={() => {
+                        setShowProfitLossAnalysis(!showProfitLossAnalysis);
+                        if (!showProfitLossAnalysis) {
+                          setShowAnalysis(false);
+                          setShowContractAnalysis(false);
+                          setShowGasAnalysis(false);
+                          setShowIdentityClustering(false);
+                        }
+                      }}
+                    >
+                      {showProfitLossAnalysis ? 'Hide Profit/Loss Analysis' : 'Show Profit/Loss Analysis'}
                     </button>
                   </div>
                   
@@ -707,6 +728,13 @@ function App() {
                   {showIdentityClustering && (
                     <IdentityClustering
                       transferPartners={transferPartners}
+                      transactions={transactions}
+                      searchAddress={searchAddress}
+                    />
+                  )}
+                  
+                  {showProfitLossAnalysis && (
+                    <ProfitLossAnalysis
                       transactions={transactions}
                       searchAddress={searchAddress}
                     />
