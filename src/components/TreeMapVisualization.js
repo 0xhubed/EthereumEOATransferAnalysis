@@ -10,6 +10,7 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
   const tooltipRef = useRef(null);
   const [currentNode, setCurrentNode] = useState(null);
   const [breadcrumbs, setBreadcrumbs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   const colorScales = {
     viridis: d3.interpolateViridis,
@@ -23,8 +24,11 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    
     if (!data || !data.name || !data.children || data.children.length === 0) {
       console.log("TreeMap: Invalid data structure", data);
+      setIsLoading(false);
       return;
     }
     
@@ -34,19 +38,33 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
     setCurrentNode(null);
     setBreadcrumbs([{ name: data.name, data: data }]);
 
-    createTreeMap(data);
+    // Use a slight delay to ensure loading indicator is shown
+    // This helps users understand processing is happening
+    setTimeout(() => {
+      createTreeMap(data);
+      setIsLoading(false);
+    }, 100);
   }, [data]);
 
   useEffect(() => {
     if (currentNode) {
-      createTreeMap(currentNode);
+      setIsLoading(true);
+      setTimeout(() => {
+        createTreeMap(currentNode);
+        setIsLoading(false);
+      }, 100);
     }
   }, [currentNode, colorScheme]);
 
   useEffect(() => {
     const handleResize = () => {
       if (breadcrumbs.length > 0) {
-        createTreeMap(breadcrumbs[breadcrumbs.length - 1].data);
+        setIsLoading(true);
+        // Debounce to avoid multiple calls during resize
+        setTimeout(() => {
+          createTreeMap(breadcrumbs[breadcrumbs.length - 1].data);
+          setIsLoading(false);
+        }, 300);
       }
     };
 
@@ -240,8 +258,14 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
         <div 
           className="tree-map-container" 
           ref={containerRef}
-          style={{ width: '100%', height: '600px' }}
+          style={{ width: '100%', height: '600px', position: 'relative' }}
         >
+          {isLoading && (
+            <div className="tree-map-loading">
+              <div className="tree-map-loading-spinner"></div>
+              <div className="tree-map-loading-text">Processing data...</div>
+            </div>
+          )}
           <svg 
             ref={svgRef}
             width="100%"

@@ -604,43 +604,25 @@ function App() {
               )}
               
               {transferPartners.length > 0 && visualizationMode === 'treemap' && (
-                <>
-                  <TreeMapVisualization
-                    data={(() => {
-                      // First try to process the actual data
-                      const processedData = processTransfersForTreeMap(transferPartners, {
-                        rootName: `${formatAddress(searchAddress)} Transfers`,
-                        groupBy: 'address'
-                      });
-                      
-                      // If the processed data is invalid or empty, use sample data
-                      if (!processedData || !processedData.children || processedData.children.length === 0) {
-                        console.log("Using sample tree map data instead");
-                        return generateSampleTreeMapData();
-                      }
-                      
-                      return processedData;
-                    })()}
-                    title={`Transaction Tree Map for ${formatAddress(searchAddress)}`}
-                    colorScheme="viridis"
-                  />
-                  {/* For debugging */}
-                  <div className="debug-info" style={{ margin: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                    <h3>Tree Map Debug Info:</h3>
-                    <p><strong>Transfer Partners Count:</strong> {transferPartners.length}</p>
-                    <p><strong>First few partners:</strong></p>
-                    <pre style={{ maxHeight: '100px', overflow: 'auto' }}>
-                      {JSON.stringify(transferPartners.slice(0, 3), null, 2)}
-                    </pre>
-                    <p><strong>Processed Data:</strong></p>
-                    <pre style={{ maxHeight: '200px', overflow: 'auto' }}>
-                      {JSON.stringify(processTransfersForTreeMap(transferPartners, {
-                        rootName: `${formatAddress(searchAddress)} Transfers`,
-                        groupBy: 'address'
-                      }), null, 2)}
-                    </pre>
-                  </div>
-                </>
+                <TreeMapVisualization
+                  data={(() => {
+                    // First try to process the actual data
+                    const processedData = processTransfersForTreeMap(transferPartners, {
+                      rootName: `${formatAddress(searchAddress)} Transfers`,
+                      groupBy: 'address'
+                    });
+                    
+                    // If the processed data is invalid or empty, use sample data
+                    if (!processedData || !processedData.children || processedData.children.length === 0) {
+                      console.log("Using sample tree map data instead");
+                      return generateSampleTreeMapData();
+                    }
+                    
+                    return processedData;
+                  })()}
+                  title={`Transaction Tree Map for ${formatAddress(searchAddress)}`}
+                  colorScheme="viridis"
+                />
               )}
               
               {/* Advanced Analytics */}
