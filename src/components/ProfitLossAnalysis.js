@@ -22,6 +22,32 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
     async function fetchData() {
       setIsLoading(true);
       
+      // Initialize with empty data
+      setAnalysis({
+        totalReceived: 0,
+        totalSent: 0,
+        netBalance: 0,
+        totalProfitLoss: 0,
+        averageROI: 0,
+        bestTransaction: null,
+        worstTransaction: null,
+        transactionsWithPL: [],
+        totalInvestment: 0,
+        currentPortfolioValue: 0,
+        overallROI: 0
+      });
+      setTimeSeriesData({ daily: [], monthly: [] });
+      
+      // Validate inputs
+      if (!transactions || !searchAddress) {
+        console.log("Missing data for analysis:", { 
+          hasTransactions: !!transactions, 
+          hasAddress: !!searchAddress
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       try {
         // In a real app, you would fetch the current price from an API
         // const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
@@ -29,6 +55,14 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
         // const ethPrice = data.ethereum.usd;
         const ethPrice = 3500; // Mock current ETH price
         setCurrentPrice(ethPrice);
+        
+        console.log("Analyzing transactions:", {
+          transactionsType: typeof transactions,
+          isArray: Array.isArray(transactions),
+          hasSent: !!transactions?.sent,
+          hasReceived: !!transactions?.received,
+          address: searchAddress
+        });
         
         // Analyze profit/loss
         const analysisResult = await analyzeProfitLoss(transactions, searchAddress, ethPrice);
@@ -100,6 +134,8 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
 
   // Draw portfolio value chart
   const drawPortfolioValueChart = () => {
+    if (!valueChartRef.current) return;
+    
     const data = getFilteredData();
     const svgElement = d3.select(valueChartRef.current);
     const tooltipElement = d3.select(tooltipRef.current);
@@ -107,7 +143,22 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
     // Clear any existing chart
     svgElement.selectAll("*").remove();
     
-    if (!data.length) return;
+    if (!data || !data.length) {
+      // Draw an empty state
+      const width = valueChartRef.current.clientWidth || 800;
+      const height = valueChartRef.current.clientHeight || 300;
+      
+      svgElement.append("text")
+        .attr("x", width / 2)
+        .attr("y", height / 2)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .style("font-size", "14px")
+        .style("fill", "#6b7280")
+        .text("No portfolio data available");
+        
+      return;
+    }
     
     const width = valueChartRef.current.clientWidth;
     const height = valueChartRef.current.clientHeight;
@@ -267,6 +318,8 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
 
   // Draw ROI chart
   const drawROIChart = () => {
+    if (!roiChartRef.current) return;
+    
     const data = getFilteredData();
     const svgElement = d3.select(roiChartRef.current);
     const tooltipElement = d3.select(tooltipRef.current);
@@ -274,7 +327,22 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
     // Clear any existing chart
     svgElement.selectAll("*").remove();
     
-    if (!data.length) return;
+    if (!data || !data.length) {
+      // Draw an empty state
+      const width = roiChartRef.current.clientWidth || 800;
+      const height = roiChartRef.current.clientHeight || 300;
+      
+      svgElement.append("text")
+        .attr("x", width / 2)
+        .attr("y", height / 2)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .style("font-size", "14px")
+        .style("fill", "#6b7280")
+        .text("No ROI data available");
+        
+      return;
+    }
     
     const width = roiChartRef.current.clientWidth;
     const height = roiChartRef.current.clientHeight;
@@ -416,6 +484,8 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
 
   // Draw price chart
   const drawPriceChart = () => {
+    if (!priceChartRef.current) return;
+    
     const data = getFilteredData();
     const svgElement = d3.select(priceChartRef.current);
     const tooltipElement = d3.select(tooltipRef.current);
@@ -423,7 +493,22 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
     // Clear any existing chart
     svgElement.selectAll("*").remove();
     
-    if (!data.length) return;
+    if (!data || !data.length) {
+      // Draw an empty state
+      const width = priceChartRef.current.clientWidth || 800;
+      const height = priceChartRef.current.clientHeight || 300;
+      
+      svgElement.append("text")
+        .attr("x", width / 2)
+        .attr("y", height / 2)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .style("font-size", "14px")
+        .style("fill", "#6b7280")
+        .text("No price history data available");
+        
+      return;
+    }
     
     const width = priceChartRef.current.clientWidth;
     const height = priceChartRef.current.clientHeight;

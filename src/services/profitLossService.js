@@ -156,7 +156,7 @@ export const calculateTransactionProfitLoss = async (transaction, currentPrice =
 /**
  * Analyze profit/loss for an address's transactions
  * 
- * @param {Object[]} transactions - Array of transactions
+ * @param {Object} transactions - Transaction object with sent and received arrays
  * @param {string} address - The address to analyze
  * @param {number} currentPrice - Current ETH price in USD
  * @returns {Object} Analysis results
@@ -178,10 +178,33 @@ export const analyzeProfitLoss = async (transactions, address, currentPrice = 35
     };
   }
   
-  // Filter transactions for this address
-  const relevantTransactions = transactions.filter(tx => 
-    tx.from === address || tx.to === address
-  );
+  // Handle the Alchemy transaction format which has sent and received arrays
+  let relevantTransactions = [];
+  
+  if (transactions.sent && Array.isArray(transactions.sent)) {
+    relevantTransactions = [...relevantTransactions, ...transactions.sent.map(tx => ({
+      ...tx,
+      from: tx.from || address,
+      to: tx.to,
+      transactionType: 'outgoing'
+    }))];
+  }
+  
+  if (transactions.received && Array.isArray(transactions.received)) {
+    relevantTransactions = [...relevantTransactions, ...transactions.received.map(tx => ({
+      ...tx,
+      from: tx.from,
+      to: tx.to || address,
+      transactionType: 'incoming'
+    }))];
+  }
+  
+  // If transactions is an array, handle that format too (for compatibility)
+  if (Array.isArray(transactions)) {
+    relevantTransactions = transactions.filter(tx => 
+      tx.from === address || tx.to === address
+    );
+  }
   
   if (relevantTransactions.length === 0) {
     return {
@@ -289,7 +312,7 @@ export const analyzeProfitLoss = async (transactions, address, currentPrice = 35
 /**
  * Generate time-series data for portfolio value
  * 
- * @param {Object[]} transactions - Transactions with profit/loss data
+ * @param {Object} transactions - Transaction object with sent and received arrays
  * @param {string} address - The address to analyze
  * @param {number} currentPrice - Current ETH price in USD
  * @returns {Object[]} Time-series data points
@@ -299,10 +322,39 @@ export const generatePortfolioTimeSeries = async (transactions, address, current
     return [];
   }
   
-  // Filter transactions for this address and sort by timestamp
-  const relevantTransactions = transactions
-    .filter(tx => tx.from === address || tx.to === address)
-    .sort((a, b) => parseInt(a.timeStamp) - parseInt(b.timeStamp));
+  // Handle the Alchemy transaction format which has sent and received arrays
+  let relevantTransactions = [];
+  
+  if (transactions.sent && Array.isArray(transactions.sent)) {
+    relevantTransactions = [...relevantTransactions, ...transactions.sent.map(tx => ({
+      ...tx,
+      from: tx.from || address,
+      to: tx.to,
+      transactionType: 'outgoing',
+      timeStamp: tx.metadata?.blockTimestamp || tx.blockTimestamp || Date.now() / 1000
+    }))];
+  }
+  
+  if (transactions.received && Array.isArray(transactions.received)) {
+    relevantTransactions = [...relevantTransactions, ...transactions.received.map(tx => ({
+      ...tx,
+      from: tx.from,
+      to: tx.to || address,
+      transactionType: 'incoming',
+      timeStamp: tx.metadata?.blockTimestamp || tx.blockTimestamp || Date.now() / 1000
+    }))];
+  }
+  
+  // If transactions is an array, handle that format too (for compatibility)
+  if (Array.isArray(transactions)) {
+    relevantTransactions = transactions
+      .filter(tx => tx.from === address || tx.to === address);
+  }
+  
+  // Sort by timestamp
+  relevantTransactions = relevantTransactions.sort((a, b) => 
+    parseInt(a.timeStamp || 0) - parseInt(b.timeStamp || 0)
+  );
   
   if (relevantTransactions.length === 0) {
     return [];
