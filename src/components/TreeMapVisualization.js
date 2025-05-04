@@ -24,8 +24,11 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
 
   useEffect(() => {
     if (!data || !data.name || !data.children || data.children.length === 0) {
+      console.log("TreeMap: Invalid data structure", data);
       return;
     }
+    
+    console.log("TreeMap: Data received", data);
     
     // Reset state when data changes
     setCurrentNode(null);
@@ -52,13 +55,24 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
   }, [breadcrumbs]);
 
   const createTreeMap = (rootData) => {
-    if (!svgRef.current || !containerRef.current) return;
+    if (!svgRef.current || !containerRef.current) {
+      console.log("TreeMap: Missing refs", { svgRef: svgRef.current, containerRef: containerRef.current });
+      return;
+    }
 
     // Clear existing SVG
     d3.select(svgRef.current).selectAll('*').remove();
 
-    const width = containerRef.current.clientWidth;
-    const height = containerRef.current.clientHeight || 600;
+    // Set explicit dimensions instead of relying on clientWidth/Height which might be 0
+    const width = containerRef.current.clientWidth || 800;
+    const height = 600;
+    
+    console.log("TreeMap: Dimensions", { width, height, 
+      clientWidth: containerRef.current.clientWidth,
+      clientHeight: containerRef.current.clientHeight,
+      offsetWidth: containerRef.current.offsetWidth,
+      offsetHeight: containerRef.current.offsetHeight
+    });
     
     const svg = d3.select(svgRef.current)
       .attr('width', width)
@@ -76,6 +90,12 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
     const root = d3.hierarchy(rootData)
       .sum(d => d.value)
       .sort((a, b) => b.value - a.value);
+    
+    console.log("TreeMap: Hierarchy created", { 
+      rootData, 
+      hierarchyNodes: root.descendants().length,
+      maxValue: d3.max(root.descendants(), d => d.value) 
+    });
     
     // Apply the treemap layout
     treemap(root);
@@ -220,8 +240,14 @@ const TreeMapVisualization = ({ data, title = 'Transaction Tree Map', colorSchem
         <div 
           className="tree-map-container" 
           ref={containerRef}
+          style={{ width: '100%', height: '600px' }}
         >
-          <svg ref={svgRef}></svg>
+          <svg 
+            ref={svgRef}
+            width="100%"
+            height="600"
+            style={{ display: 'block' }}
+          ></svg>
           <div 
             className="tree-map-tooltip" 
             ref={tooltipRef} 

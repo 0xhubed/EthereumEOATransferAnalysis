@@ -453,16 +453,37 @@ export const processContractInteractionsForTreeMap = (contractData, options = {}
  */
 export const processTransfersForTreeMap = (transfers, options = {}) => {
   if (!transfers || transfers.length === 0) {
+    console.log("No transfers data provided");
     return { name: 'No Data', children: [] };
   }
 
-  return processTransactionsForTreeMap(transfers.map(transfer => ({
-    from: transfer.from,
-    to: transfer.to,
-    value: transfer.value || transfer.amount || 0,
-    timestamp: transfer.timestamp || transfer.date,
-    hash: transfer.hash || transfer.id
-  })), options.groupBy || 'address', options);
+  console.log("Processing transfers for tree map", { count: transfers.length, firstItem: transfers[0] });
+
+  // Handle the special transfer partners structure used in the app
+  const mappedTransfers = transfers.map(transfer => {
+    // Check if this is a transfer partner object (as in App.js)
+    if (transfer.address && (transfer.totalSent !== undefined || transfer.totalReceived !== undefined)) {
+      return {
+        from: options.rootName?.split(' ')[0] || 'Root',  // Use search address as from
+        to: transfer.address,
+        value: (transfer.totalSent || 0) + (transfer.totalReceived || 0),
+        timestamp: transfer.lastTransactionDate,
+        hash: transfer.address.substring(0, 10), // Use part of address as hash
+        details: `Total sent: ${transfer.totalSent || 0}\nTotal received: ${transfer.totalReceived || 0}`
+      };
+    }
+    
+    // Regular transfer object
+    return {
+      from: transfer.from,
+      to: transfer.to,
+      value: transfer.value || transfer.amount || 0,
+      timestamp: transfer.timestamp || transfer.date,
+      hash: transfer.hash || transfer.id
+    };
+  });
+
+  return processTransactionsForTreeMap(mappedTransfers, options.groupBy || 'address', options);
 };
 
 export default {
