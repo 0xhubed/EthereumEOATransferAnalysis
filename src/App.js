@@ -21,6 +21,7 @@ import TransactionHeatMap from './components/TransactionHeatMap';
 import TreeMapVisualization from './components/TreeMapVisualization';
 import ProfitLossAnalysis from './components/ProfitLossAnalysis';
 import SavedSearches from './components/SavedSearches';
+import SankeyDiagram from './components/SankeyDiagram';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
@@ -43,7 +44,7 @@ function App() {
   const [selectedPartner, setSelectedPartner] = useState(null);
   
   // Visualization options
-  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d', 'heatmap', 'treemap'
+  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d', 'heatmap', 'treemap', 'sankey'
   
   // Analysis options
   const [showAnalysis, setShowAnalysis] = useState(false);
@@ -566,6 +567,12 @@ function App() {
                     >
                       Tree Map
                     </button>
+                    <button
+                      className={visualizationMode === 'sankey' ? 'active' : ''}
+                      onClick={() => setVisualizationMode('sankey')}
+                    >
+                      Sankey Diagram
+                    </button>
                   </div>
                 </div>
               )}
@@ -625,6 +632,17 @@ function App() {
                   })()}
                   title={`Transaction Tree Map for ${formatAddress(searchAddress)}`}
                   colorScheme="viridis"
+                />
+              )}
+              
+              {transferPartners.length > 0 && visualizationMode === 'sankey' && (
+                <SankeyDiagram 
+                  transactions={{
+                    sent: transactions?.sent || [],
+                    received: transactions?.received || [],
+                    address: searchAddress
+                  }}
+                  isLoading={loading}
                 />
               )}
               
