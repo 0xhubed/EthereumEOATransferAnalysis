@@ -1,22 +1,23 @@
 .pattern-analysis-container {
   width: 100%;
-  background-color: white;
+  background-color: #1a1a1a;
   border-radius: 8px;
   padding: 20px;
   margin: 20px 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333333;
 }
 
 .pattern-analysis-container h3 {
   margin-top: 0;
   margin-bottom: 20px;
-  color: #333;
+  color: #ffffff;
   font-size: 1.25rem;
 }
 
 .analysis-tabs {
   display: flex;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #333333;
   margin-bottom: 20px;
 }
 
@@ -26,17 +27,17 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  color: #666;
+  color: #cccccc;
   position: relative;
   transition: all 0.2s;
 }
 
 .tab-button:hover {
-  color: #2563eb;
+  color: #ffffff;
 }
 
 .tab-button.active {
-  color: #2563eb;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -47,7 +48,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background-color: #2563eb;
+  background-color: #ffffff;
   border-radius: 3px 3px 0 0;
 }
 
@@ -89,15 +90,15 @@
 }
 
 .pattern-card.high {
-  border-left-color: #ef4444;
+  border-left-color: #333;
 }
 
 .pattern-card.medium {
-  border-left-color: #f59e0b;
+  border-left-color: #666;
 }
 
 .pattern-card.low {
-  border-left-color: #3b82f6;
+  border-left-color: #999;
 }
 
 .pattern-header {
@@ -120,18 +121,18 @@
 }
 
 .pattern-icon.high {
-  background-color: #fee2e2;
-  color: #ef4444;
+  background-color: #f0f0f0;
+  color: #333;
 }
 
 .pattern-icon.medium {
-  background-color: #fef3c7;
-  color: #f59e0b;
+  background-color: #f5f5f5;
+  color: #666;
 }
 
 .pattern-icon.low {
-  background-color: #dbeafe;
-  color: #3b82f6;
+  background-color: #f8f8f8;
+  color: #999;
 }
 
 .pattern-title {
@@ -153,18 +154,18 @@
 }
 
 .confidence-badge.high {
-  background-color: #d1fae5;
-  color: #059669;
+  background-color: #f0f0f0;
+  color: #333;
 }
 
 .confidence-badge.medium {
-  background-color: #fef3c7;
-  color: #d97706;
+  background-color: #f5f5f5;
+  color: #666;
 }
 
 .confidence-badge.low {
-  background-color: #fee2e2;
-  color: #dc2626;
+  background-color: #f8f8f8;
+  color: #999;
 }
 
 .pattern-description {
@@ -295,11 +296,11 @@
   height: 100%;
   border-radius: 50%;
   background: conic-gradient(
-    #22c55e 0% 20%,
-    #84cc16 20% 40%,
-    #eab308 40% 60%,
-    #f97316 60% 80%,
-    #ef4444 80% 100%
+    #bbb 0% 20%,
+    #999 20% 40%,
+    #777 40% 60%,
+    #555 60% 80%,
+    #333 80% 100%
   );
 }
 
@@ -357,23 +358,23 @@
 }
 
 .risk-score-display.high {
-  --risk-color: #ef4444;
+  --risk-color: #333;
 }
 
 .risk-score-display.medium {
-  --risk-color: #f97316;
+  --risk-color: #555;
 }
 
 .risk-score-display.low {
-  --risk-color: #eab308;
+  --risk-color: #777;
 }
 
 .risk-score-display.very-low {
-  --risk-color: #84cc16;
+  --risk-color: #999;
 }
 
 .risk-score-display.minimal {
-  --risk-color: #22c55e;
+  --risk-color: #bbb;
 }
 
 .risk-factors {

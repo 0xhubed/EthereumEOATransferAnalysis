@@ -1,5 +1,8 @@
 import React from "react";
-import { cn } from "./registry";
+
+const cn = (...classes) => {
+  return classes.filter(Boolean).join(' ');
+};
 
 const Input = React.forwardRef(({ className, type = "text", ...props }, ref) => {
   return (

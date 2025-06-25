@@ -1,50 +1,188 @@
-.transfer-graph-container {
+/* EtherFlow Transfer Graph Styles - Dark Theme */
+.transfer-graph {
   width: 100%;
-  margin: 20px 0;
-  background-color: #f5f7f9;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 1.5rem 0;
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333333;
 }
 
-.graph-wrapper {
-  height: 600px;
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+.transfer-graph h3 {
+  margin: 0 0 1.5rem 0;
+  color: #ffffff;
+  text-align: center;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  font-weight: 600;
 }
 
 .graph-container {
-  width: 100% !important;
-  height: 100% !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  height: clamp(400px, 50vh, 600px);
+  border: 2px solid #333333;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   position: relative;
-  text-align: center;
-}
-
-.react-d3-graph-container {
-  display: flex !important;
-  justify-content: center !important;
-  margin: 0 auto !important;
-  width: 100% !important;
-  left: 0 !important;
-}
-
-.graph-container > div,
-#transfer-graph {
-  width: 100% !important;
-  height: 100% !important;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.graph-container svg {
+  width: 100%;
+  height: 100%;
+}
+
+.graph-tooltip {
+  background: rgba(0, 0, 0, 0.95);
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  max-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333333;
+}
+
+.tooltip-address {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.tooltip-value, .tooltip-sent, .tooltip-received {
+  margin: 2px 0;
+}
+
+.tooltip-anomaly {
+  color: #ff6b6b;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.graph-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 8px;
+  border: 1px solid #333333;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.legend-dot.central {
+  background: linear-gradient(135deg, #4c6ef5 0%, #364fc7 100%);
+  border-color: #ffffff;
+}
+
+.legend-dot.partner {
+  background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+  border-color: #ffffff;
+}
+
+.legend-dot.anomaly {
+  background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 100%);
+  border-color: #ffffff;
+}
+
+.legend-line {
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.legend-line.sent {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ef4444 100%);
+}
+
+.legend-line.received {
+  background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+}
+
+.graph-info {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 8px;
+  border: 1px solid #333333;
+  font-size: 0.875rem;
+  color: #cccccc;
+  line-height: 1.6;
+}
+
+.graph-info p {
+  margin: 0.25rem 0;
+}
+
+/* Mobile Responsiveness for Graph */
+@media (max-width: 768px) {
+  .transfer-graph {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .graph-container {
+    height: clamp(300px, 40vh, 450px);
+  }
+  
+  .graph-legend {
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .legend-item {
+    font-size: 0.8rem;
+  }
+  
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .legend-line {
+    width: 20px;
+    height: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .transfer-graph {
+    padding: 0.75rem;
+  }
+  
+  .graph-container {
+    height: clamp(250px, 35vh, 350px);
+  }
+  
+  .graph-legend {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .legend-item {
+    font-size: 0.75rem;
+  }
 }
 
 #transfer-graph-wrapper {
@@ -69,8 +207,8 @@
 .graph-error {
   text-align: center;
   padding: 2rem;
-  color: #e57373;
-  background-color: #ffebee;
+  color: #333;
+  background-color: #f5f5f5;
   border-radius: 4px;
   width: 80%;
 }
@@ -107,18 +245,18 @@
 }
 
 .search-address {
-  background-color: #ff6347;
+  background-color: #333;
   transform: rotate(45deg);
   border: 2px solid white;
 }
 
 .partner-address {
-  background-color: #1f77b4;
+  background-color: #666;
 }
 
 .anomaly-address {
-  background-color: #db4437;
-  border: 2px solid #ffcc00;
+  background-color: #999;
+  border: 2px solid #ccc;
 }
 
 .node-triangle {
@@ -126,16 +264,16 @@
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 12px solid #db4437;
+  border-bottom: 12px solid #999;
   margin-right: 8px;
 }
 
 .node-square {
   width: 12px;
   height: 12px;
-  background-color: #db4437;
+  background-color: #999;
   margin-right: 8px;
-  border: 2px solid #ffcc00;
+  border: 2px solid #ccc;
 }
 
 .link-line {
@@ -146,11 +284,11 @@
 }
 
 .link-line.sent {
-  background-color: #ff9999;
+  background-color: #999;
 }
 
 .link-line.received {
-  background-color: #99ff99;
+  background-color: #ccc;
 }
 
 .legend-note {
@@ -185,22 +323,22 @@
 .tooltip-value {
   font-size: 14px;
   margin-bottom: 4px;
-  color: #ffcc00;
+  color: #ccc;
 }
 
 .tooltip-sent {
-  color: #ff9999;
+  color: #999;
 }
 
 .tooltip-received {
-  color: #99ff99;
+  color: #ccc;
 }
 
 .tooltip-anomaly {
   margin-top: 6px;
   padding-top: 6px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffcc00;
+  color: #ccc;
   display: flex;
   align-items: center;
 }

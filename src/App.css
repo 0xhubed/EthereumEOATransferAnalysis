@@ -1,412 +1,611 @@
+/* EtherFlow - Dark Theme Ethereum Transaction Analysis Tool */
+
+/* Global Reset and Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #0a0a0a;
+  color: #ffffff;
+}
+
+/* Main App Layout - Dark Theme */
 .app {
-  text-align: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
 }
 
 .app-header {
-  background-color: #282c34;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
+  background: linear-gradient(135deg, #000000 0%, #2a2a2a 100%);
+  padding: 1.5rem;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #333333;
+}
+
+.app-header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-header p {
+  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  opacity: 0.8;
+  margin: 0;
+  font-weight: 300;
+  color: #cccccc;
 }
 
 .app-main {
   flex: 1;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  padding: 1rem;
+  background: #0a0a0a;
+  min-height: calc(100vh - 200px);
 }
 
 .app-footer {
-  background-color: #282c34;
+  background: linear-gradient(135deg, #000000 0%, #2a2a2a 100%);
   padding: 1rem;
-  color: white;
+  color: #cccccc;
+  text-align: center;
+  font-size: 0.875rem;
+  border-top: 1px solid #333333;
 }
 
-.connect-button {
-  background-color: #61dafb;
-  color: black;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s;
-}
-
-.connect-button:hover {
-  background-color: #21a9db;
-}
-
-.wallet-info {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 1rem;
-  border-radius: 4px;
-  margin-top: 1rem;
-  width: 100%;
-  max-width: 500px;
-}
-
-.error {
-  color: #ff6b6b;
-  margin-top: 1rem;
-}
-
-.card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  margin: 1rem 0;
-  width: 100%;
+/* Card Styles - Dark Theme */
+.w-full.max-w-5xl.mx-auto {
+  background: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333333;
+  overflow: hidden;
+  margin: 0 auto;
   max-width: 1200px;
 }
 
-.card h2 {
-  color: #282c34;
-  margin-top: 0;
-}
-
-/* New styles for the transfer history explorer */
-
-.input-group {
+/* Typography - Dark Theme */
+.CardTitle {
   display: flex;
-  margin: 1rem 0;
-  width: 100%;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
 }
 
-.text-input {
-  flex: 1;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px 0 0 4px;
-  outline: none;
+/* Section Headers - Dark Theme */
+.visualization-header, .analytics-header, .results-header {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 8px;
+  border: 1px solid #333333;
 }
 
-.action-button {
-  background-color: #61dafb;
-  color: black;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.action-button:hover:not(:disabled) {
-  background-color: #21a9db;
-}
-
-.action-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.use-wallet-button {
-  background-color: transparent;
-  color: #282c34;
-  border: 1px solid #282c34;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  transition: all 0.3s;
-}
-
-.use-wallet-button:hover {
-  background-color: #282c34;
-  color: white;
-}
-
-.api-key-section, .search-section, .results-section {
-  width: 100%;
-  margin: 1.5rem 0;
-  text-align: left;
+.visualization-header h3, .analytics-header h3 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .results-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+.results-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Button Styles - Dark Theme */
+.visualization-buttons, .analytics-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.visualization-buttons button, .analytics-buttons button, .analysis-toggle {
+  padding: 0.75rem 1.25rem;
+  border: 2px solid #333333;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #1a1a1a;
+  color: #cccccc;
+  min-width: 120px;
+  text-align: center;
+}
+
+.visualization-buttons button:hover, .analytics-buttons button:hover, .analysis-toggle:hover {
+  border-color: #ffffff;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.visualization-buttons button.active, .analytics-buttons button.active {
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.analysis-toggle.active {
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Filter Controls - Dark Theme */
 .filter-controls {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
-.anomaly-filter {
+.filter-controls label {
   display: flex;
   align-items: center;
-  cursor: pointer;
+  gap: 8px;
   font-size: 0.9rem;
-  background-color: #fff9c4;
+  color: #cccccc;
+  cursor: pointer;
   padding: 0.5rem 0.75rem;
-  border-radius: 4px;
-  border: 1px solid #ffeb3b;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333333;
+  transition: all 0.2s ease;
 }
 
-.anomaly-filter input {
-  margin-right: 8px;
+.filter-controls label:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #666666;
+  color: #ffffff;
 }
 
-.success-text {
-  color: #4caf50;
-  margin-top: 0.5rem;
-}
-
+/* Transfer List Styles - Dark Theme */
 .transfer-list {
   width: 100%;
-  border: 1px solid #eee;
-  border-radius: 4px;
+  border: 1px solid #333333;
+  border-radius: 8px;
   margin-top: 1rem;
   overflow: hidden;
+  background: #1a1a1a;
 }
 
 .transfer-item {
-  display: flex;
-  padding: 0.75rem;
-  border-bottom: 1px solid #eee;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 0.5fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #2a2a2a;
+  align-items: center;
+  transition: background-color 0.2s ease;
 }
 
 .transfer-item:last-child {
   border-bottom: none;
 }
 
+.transfer-item:hover:not(.header) {
+  background-color: #2a2a2a;
+}
+
 .transfer-item.header {
-  background-color: #f5f5f5;
-  font-weight: bold;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.875rem;
 }
 
 .transfer-item.header .sortable {
   cursor: pointer;
-  position: relative;
-  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.25rem;
+  border-radius: 4px;
   transition: background-color 0.2s;
 }
 
 .transfer-item.header .sortable:hover {
-  background-color: #eaeaea;
-}
-
-.transfer-item.header .sortable .sort-icon {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 5px;
-}
-
-.transfer-item.header .sortable.ascending .sort-icon {
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid #666;
-}
-
-.transfer-item.header .sortable.descending .sort-icon {
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #666;
+  background-color: #333333;
 }
 
 .transfer-item .address {
-  flex: 1.5;
-  text-align: left;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  color: #ffffff;
   word-break: break-all;
-  font-family: monospace;
-  font-size: 0.9em;
 }
 
 .transfer-item .amount {
-  flex: 1;
   text-align: right;
+  font-weight: 500;
+  color: #cccccc;
 }
 
-.transfer-item .sent {
-  color: #e57373;
+.transfer-item .amount.sent {
+  color: #ff6b6b;
 }
 
-.transfer-item .received {
-  color: #4caf50;
+.transfer-item .amount.received {
+  color: #51cf66;
 }
 
-.transfer-item .total {
-  font-weight: bold;
+.transfer-item .amount.total {
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .transfer-item .annotation {
-  flex: 1;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 0 8px;
+  font-size: 0.875rem;
+  color: #999999;
 }
 
 .transfer-item .actions {
-  flex: 0.5;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
-.details-button {
-  background-color: #eeeeee;
-  border: none;
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.details-button:hover {
-  background-color: #dddddd;
-}
-
-/* Anomaly highlighting in transfer list */
+/* Anomaly Styles - Dark Theme */
 .transfer-item.anomaly {
-  background-color: #fff8e1;
-  border-left: 4px solid #ffc107;
+  background: linear-gradient(135deg, #2a1a1a 0%, #1a0f0f 100%);
+  border-left: 4px solid #ff6b6b;
 }
 
 .anomaly-indicator {
-  margin-right: 8px;
-  color: #d32f2f;
+  margin-right: 0.5rem;
+  color: #ff6b6b;
 }
 
 .anomaly-tag {
   display: inline-block;
-  background-color: #ffeb3b;
-  color: #d32f2f;
-  padding: 2px 6px;
+  background: #ff6b6b;
+  color: #ffffff;
+  padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  font-size: 0.7rem;
-  margin-top: 4px;
-  font-weight: bold;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
 }
 
-.visualization-controls {
-  margin: 20px 0;
-  padding: 15px;
-  background-color: #f5f7f9;
+/* Visualization Containers - Dark Theme */
+.visualization-controls, .analytics-section {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: #1a1a1a;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333333;
 }
 
-.visualization-buttons {
+/* Loading and Error States - Dark Theme */
+.loading-map, .map-error, .loading-heatmap, .heatmap-error {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   justify-content: center;
-}
-
-.visualization-buttons button {
-  padding: 8px 16px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.visualization-buttons button:hover {
-  background-color: #f0f4f8;
-  border-color: #c7d2fe;
-}
-
-.visualization-buttons button.active {
-  background-color: #2563eb;
-  color: white;
-  border-color: #2563eb;
-}
-
-/* Analytics Section */
-.analytics-section {
-  margin: 20px 0;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-}
-
-.analytics-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.analysis-toggle {
-  padding: 10px 16px;
-  background-color: #f5f7f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-  position: relative;
-  display: flex;
   align-items: center;
+  height: 200px;
+  color: #cccccc;
+  font-style: italic;
 }
 
-.analysis-toggle::before {
-  content: '📊';
-  margin-right: 8px;
-  font-size: 1.2rem;
+.map-error, .heatmap-error {
+  color: #ff6b6b;
 }
 
-.analysis-toggle:hover {
-  background-color: #e2e8f0;
+/* Input and Form Styles - Dark Theme */
+input[type="text"], input[type="email"], select, textarea {
+  background: #2a2a2a;
+  border: 1px solid #333333;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
 }
 
-.analysis-toggle.active {
-  background-color: #2563eb;
-  color: white;
-  border-color: #2563eb;
+/* Search Address Section */
+.search-address-label {
+  color: #ffffff !important;
 }
 
-.analysis-toggle.active::before {
-  content: '📊';
+/* Fix all heading and label text colors */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff !important;
 }
 
+.text-lg.font-medium {
+  color: #ffffff !important;
+}
+
+.text-sm.font-medium {
+  color: #ffffff !important;
+}
+
+/* Specific fixes for dashboard elements */
+.CardTitle {
+  color: #ffffff !important;
+}
+
+/* Time filter label */
+label[for="enable-time-filter"] {
+  color: #ffffff !important;
+}
+
+/* Force all labels and text to be visible */
+label {
+  color: #ffffff !important;
+}
+
+/* Card content text */
+.CardDescription {
+  color: #cccccc !important;
+}
+
+/* Override Tailwind classes that might be setting black text */
+.text-black {
+  color: #ffffff !important;
+}
+
+.text-gray-900 {
+  color: #ffffff !important;
+}
+
+.text-gray-800 {
+  color: #cccccc !important;
+}
+
+.text-gray-700 {
+  color: #cccccc !important;
+}
+
+.text-gray-600 {
+  color: #999999 !important;
+}
+
+/* Main card content area */
+.CardContent {
+  color: #ffffff !important;
+}
+
+.CardContent * {
+  color: inherit;
+}
+
+/* Button text color fixes */
+button {
+  color: #000000 !important;
+}
+
+.btn,
+.button,
+[role="button"] {
+  color: #000000 !important;
+}
+
+/* Specific button variants */
+button[variant="outline"],
+button[variant="secondary"],
+button[variant="default"] {
+  color: #000000 !important;
+}
+
+/* Search button text */
+.search-buttons button {
+  color: #000000 !important;
+}
+
+/* Saved Searches Panel */
+.saved-searches-panel.p-3.bg-gray-50 {
+  background: #2a2a2a !important;
+  border: 1px solid #333333 !important;
+  color: #ffffff;
+}
+
+.saved-searches-panel h4 {
+  color: #ffffff !important;
+}
+
+.saved-searches-panel .text-gray-500 {
+  color: #cccccc !important;
+}
+
+.saved-searches-panel .text-gray-400 {
+  color: #999999 !important;
+}
+
+.saved-search-item.hover\\:bg-gray-100:hover {
+  background: #333333 !important;
+}
+
+.saved-search-item .font-medium {
+  color: #ffffff !important;
+}
+
+/* Analysis Sections */
+.analytics-section {
+  background: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+}
+
+/* Individual Analysis Components */
+.pattern-analysis-container,
+.gas-analysis-container,
+.profit-loss-analysis-container {
+  background: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+  color: #ffffff !important;
+}
+
+/* Force all nested elements in analysis to use dark theme */
+.analytics-section *,
+.pattern-analysis-container *,
+.gas-analysis-container *,
+.profit-loss-analysis-container * {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+.analytics-section .card,
+.pattern-analysis-container .card,
+.gas-analysis-container .card,
+.profit-loss-analysis-container .card {
+  background: #2a2a2a !important;
+  border: 1px solid #333333 !important;
+}
+
+.analytics-section h3,
+.analytics-section h4,
+.analytics-section h5,
+.pattern-analysis-container h3,
+.pattern-analysis-container h4,
+.gas-analysis-container h3,
+.gas-analysis-container h4,
+.profit-loss-analysis-container h3,
+.profit-loss-analysis-container h4 {
+  color: #ffffff !important;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+input[type="checkbox"] {
+  accent-color: #ffffff;
+}
+
+/* Mobile Responsiveness - Dark Theme */
 @media (max-width: 768px) {
-  .card {
+  .app-main {
+    padding: 0.5rem;
+  }
+  
+  .w-full.max-w-5xl.mx-auto {
+    margin: 0;
+    border-radius: 0;
+  }
+  
+  .visualization-header, .analytics-header, .results-header {
     padding: 1rem;
   }
   
+  .visualization-buttons, .analytics-buttons {
+    gap: 0.5rem;
+  }
+  
+  .visualization-buttons button, .analytics-buttons button, .analysis-toggle {
+    min-width: 100px;
+    padding: 0.625rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Mobile Transfer List */
   .transfer-item {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
     padding: 1rem;
-  }
-  
-  .transfer-item .address,
-  .transfer-item .amount,
-  .transfer-item .annotation {
-    flex: 0 0 100%;
-    text-align: left;
-    margin: 0.25rem 0;
   }
   
   .transfer-item.header {
     display: none;
   }
   
-  .transfer-item .annotation {
-    padding: 4px 0;
-    border-top: 1px solid #f5f5f5;
+  .transfer-item .address::before {
+    content: "Address: ";
+    font-weight: 600;
+    color: #cccccc;
   }
+  
+  .transfer-item .amount.sent::before {
+    content: "Sent: ";
+    font-weight: 600;
+    color: #cccccc;
+  }
+  
+  .transfer-item .amount.received::before {
+    content: "Received: ";
+    font-weight: 600;
+    color: #cccccc;
+  }
+  
+  .transfer-item .amount.total::before {
+    content: "Total: ";
+    font-weight: 600;
+    color: #cccccc;
+  }
+  
+  .transfer-item .annotation::before {
+    content: "Note: ";
+    font-weight: 600;
+    color: #cccccc;
+  }
+  
+  .filter-controls {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 1rem;
+  }
+  
+  .visualization-buttons button, .analytics-buttons button, .analysis-toggle {
+    min-width: 90px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  .CardTitle {
+    font-size: 1.125rem;
+  }
+}
+
+/* Custom Scrollbar - Dark Theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666666;
 }

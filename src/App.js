@@ -9,21 +9,18 @@ import {
   deleteSavedSearch
 } from './services/alchemyService';
 import TransferDetails from './components/TransferDetails';
-import TransferGraph from './components/TransferGraph';
+import TransferGraphD3 from './components/TransferGraphD3';
 import TimelineVisualization from './components/TimelineVisualization';
-import NetworkEvolution from './components/NetworkEvolution';
-import SimplifiedGraph3D from './components/SimplifiedGraph3D';
 import PatternAnalysis from './components/PatternAnalysis';
-import ContractInteractions from './components/ContractInteractions';
 import GasUsageAnalysis from './components/GasUsageAnalysis';
-import IdentityClustering from './components/IdentityClustering';
-import TransactionHeatMap from './components/TransactionHeatMap';
+import TransactionVolumeHeatmap from './components/TransactionVolumeHeatmap';
 import TreeMapVisualization from './components/TreeMapVisualization';
 import ProfitLossAnalysis from './components/ProfitLossAnalysis';
 import SavedSearches from './components/SavedSearches';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
+import InfoButton from './components/ui/InfoButton';
 import { generateSampleTreeMapData, processTransfersForTreeMap } from './services/treeMapService';
 
 function App() {
@@ -43,13 +40,11 @@ function App() {
   const [selectedPartner, setSelectedPartner] = useState(null);
   
   // Visualization options
-  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'evolution', '3d', 'heatmap', 'treemap'
+  const [visualizationMode, setVisualizationMode] = useState('standard'); // 'standard', 'timeline', 'heatmap', 'treemap'
   
   // Analysis options
   const [showAnalysis, setShowAnalysis] = useState(false);
-  const [showContractAnalysis, setShowContractAnalysis] = useState(false);
   const [showGasAnalysis, setShowGasAnalysis] = useState(false);
-  const [showIdentityClustering, setShowIdentityClustering] = useState(false);
   const [showProfitLossAnalysis, setShowProfitLossAnalysis] = useState(false);
   
   // Time filter options
@@ -257,9 +252,7 @@ function App() {
       
       // Reset analysis state when loading new data
       setShowAnalysis(false);
-      setShowContractAnalysis(false);
       setShowGasAnalysis(false);
-      setShowIdentityClustering(false);
       setShowProfitLossAnalysis(false);
       
       // Auto-save this search with extended information
@@ -354,16 +347,43 @@ function App() {
   };
 
   return (
-    <div className="app min-h-screen bg-gray-50 p-4">
+    <div className="app min-h-screen bg-white p-4">
       <header className="app-header">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">Blockchain Transfer History Explorer</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-1">EtherFlow</h1>
+        <p className="text-lg text-gray-300 mb-2">Ethereum Transaction Analysis Made Simple</p>
         {error && <p className="text-red-500 bg-red-50 p-2 rounded-md">{error}</p>}
       </header>
 
       <main className="app-main">
         <Card className="w-full max-w-5xl mx-auto">
           <CardHeader>
-            <CardTitle>Transfer History Explorer</CardTitle>
+            <CardTitle>
+              EtherFlow Dashboard
+              <InfoButton title="About EtherFlow">
+                <h3>EtherFlow - Ethereum Analysis Tool</h3>
+                <p>Analyze Ethereum address transaction patterns and relationships with other addresses.</p>
+                
+                <h4>Key Features:</h4>
+                <div className="feature-list">
+                  <div className="feature-item">
+                    <strong>Address Analysis:</strong> View all EOA accounts that have transferred ETH with your target address
+                  </div>
+                  <div className="feature-item">
+                    <strong>Transaction Visualization:</strong> Multiple chart types to understand transfer patterns
+                  </div>
+                  <div className="feature-item">
+                    <strong>Anomaly Detection:</strong> Identify unusual transaction patterns automatically
+                  </div>
+                  <div className="feature-item">
+                    <strong>Time Filtering:</strong> Analyze specific time periods using block numbers
+                  </div>
+                </div>
+                
+                <div className="tip">
+                  <strong>Tip:</strong> Use the time-based filtering to focus on specific periods of activity.
+                </div>
+              </InfoButton>
+            </CardTitle>
             <CardDescription>
               Enter an Ethereum address to see all EOA accounts it has transferred ETH with,
               along with the amounts transferred.
@@ -379,7 +399,32 @@ function App() {
             
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium">Search Address</h3>
+                <h3 className="text-lg font-medium">
+                  Search Address
+                  <InfoButton title="How to Search Addresses">
+                    <h3>Ethereum Address Search</h3>
+                    <p>Enter any valid Ethereum address to analyze its transaction history.</p>
+                    
+                    <h4>Address Format:</h4>
+                    <ul>
+                      <li>Must start with <code>0x</code></li>
+                      <li>Followed by 40 hexadecimal characters</li>
+                      <li>Example: <code>0x742d35cc6634c0532925a3b8d0949d2c</code></li>
+                    </ul>
+                    
+                    <h4>What You'll See:</h4>
+                    <ul>
+                      <li><strong>Transfer Partners:</strong> All addresses that sent/received ETH</li>
+                      <li><strong>Transaction Amounts:</strong> Total sent and received values</li>
+                      <li><strong>Anomaly Indicators:</strong> Unusual patterns highlighted</li>
+                      <li><strong>Visual Networks:</strong> Interactive relationship graphs</li>
+                    </ul>
+                    
+                    <div className="warning">
+                      <strong>Note:</strong> Only EOA (Externally Owned Account) transfers are shown, not contract interactions.
+                    </div>
+                  </InfoButton>
+                </h3>
                 
                 {/* Saved Searches Button */}
                 <div className="flex space-x-2">
@@ -487,6 +532,29 @@ function App() {
                   />
                   <label htmlFor="enable-time-filter" className="text-sm font-medium">
                     Enable Time-Based Filtering
+                    <InfoButton title="Time-Based Filtering">
+                      <h3>Time-Based Filtering</h3>
+                      <p>Filter transactions by specific time periods using Ethereum block numbers.</p>
+                      
+                      <h4>How It Works:</h4>
+                      <ul>
+                        <li><strong>Block Numbers:</strong> Each transaction occurs in a specific block</li>
+                        <li><strong>Time Range:</strong> Set start and end blocks to focus analysis</li>
+                        <li><strong>Precision:</strong> More accurate than timestamps for blockchain data</li>
+                      </ul>
+                      
+                      <h4>Use Cases:</h4>
+                      <ul>
+                        <li>Analyze activity during specific events</li>
+                        <li>Focus on recent transactions only</li>
+                        <li>Compare different time periods</li>
+                        <li>Investigate suspicious activity windows</li>
+                      </ul>
+                      
+                      <div className="tip">
+                        <strong>Tip:</strong> Use <a href="https://etherscan.io" target="_blank" rel="noopener noreferrer">Etherscan</a> to find block numbers for specific dates.
+                      </div>
+                    </InfoButton>
                   </label>
                 </div>
                 
@@ -529,6 +597,33 @@ function App() {
               {/* Visualization Controls */}
               {transferPartners.length > 0 && (
                 <div className="visualization-controls">
+                  <div className="visualization-header">
+                    <h3>Visualization Options</h3>
+                    <InfoButton title="About Visualizations">
+                      <h3>Transaction Visualizations</h3>
+                      <p>Different ways to view and analyze transaction patterns:</p>
+                      
+                      <h4>Available Visualizations:</h4>
+                      <div className="feature-list">
+                        <div className="feature-item">
+                          <strong>Standard Network:</strong> Interactive node-link graph showing address relationships
+                        </div>
+                        <div className="feature-item">
+                          <strong>Timeline View:</strong> Chronological visualization of transactions over time
+                        </div>
+                        <div className="feature-item">
+                          <strong>Volume Heatmap:</strong> Time-based transaction patterns and volume analysis
+                        </div>
+                        <div className="feature-item">
+                          <strong>Tree Map:</strong> Hierarchical view of transaction volumes
+                        </div>
+                      </div>
+                      
+                      <div className="tip">
+                        <strong>Tip:</strong> Each visualization reveals different aspects of the transaction patterns. Try switching between them for comprehensive analysis.
+                      </div>
+                    </InfoButton>
+                  </div>
                   <div className="visualization-buttons">
                     <button
                       className={visualizationMode === 'standard' ? 'active' : ''}
@@ -543,22 +638,10 @@ function App() {
                       Timeline View
                     </button>
                     <button
-                      className={visualizationMode === 'evolution' ? 'active' : ''}
-                      onClick={() => setVisualizationMode('evolution')}
-                    >
-                      Network Evolution
-                    </button>
-                    <button
-                      className={visualizationMode === '3d' ? 'active' : ''}
-                      onClick={() => setVisualizationMode('3d')}
-                    >
-                      3D Visualization
-                    </button>
-                    <button
                       className={visualizationMode === 'heatmap' ? 'active' : ''}
                       onClick={() => setVisualizationMode('heatmap')}
                     >
-                      Heat Map
+                      Volume Heatmap
                     </button>
                     <button
                       className={visualizationMode === 'treemap' ? 'active' : ''}
@@ -572,7 +655,7 @@ function App() {
               
               {/* Selected Visualization */}
               {transferPartners.length > 0 && visualizationMode === 'standard' && (
-                <TransferGraph 
+                <TransferGraphD3 
                   transferPartners={transferPartners} 
                   searchAddress={searchAddress}
                 />
@@ -585,22 +668,9 @@ function App() {
                 />
               )}
               
-              {transferPartners.length > 0 && visualizationMode === 'evolution' && (
-                <NetworkEvolution
-                  transferPartners={transferPartners}
-                  searchAddress={searchAddress}
-                />
-              )}
-              
-              {transferPartners.length > 0 && visualizationMode === '3d' && (
-                <SimplifiedGraph3D
-                  transferPartners={transferPartners}
-                  searchAddress={searchAddress}
-                />
-              )}
               
               {transferPartners.length > 0 && visualizationMode === 'heatmap' && (
-                <TransactionHeatMap
+                <TransactionVolumeHeatmap
                   transferPartners={transferPartners}
                   searchAddress={searchAddress}
                 />
@@ -631,15 +701,45 @@ function App() {
               {/* Advanced Analytics */}
               {transferPartners.length > 0 && (
                 <div className="analytics-section">
+                  <div className="analytics-header">
+                    <h3>Advanced Analytics</h3>
+                    <InfoButton title="About Advanced Analytics">
+                      <h3>Advanced Analytics Tools</h3>
+                      <p>Powerful analysis features to detect patterns and anomalies in transaction data:</p>
+                      
+                      <h4>Available Analytics:</h4>
+                      <div className="feature-list">
+                        <div className="feature-item">
+                          <strong>Pattern Analysis:</strong> Detect unusual transaction patterns, timing anomalies, and suspicious behavior
+                        </div>
+                        <div className="feature-item">
+                          <strong>Gas Analysis:</strong> Analyze gas usage patterns to understand transaction complexity and costs
+                        </div>
+                        <div className="feature-item">
+                          <strong>Profit/Loss Analysis:</strong> Calculate net gains/losses and track value flow over time
+                        </div>
+                      </div>
+                      
+                      <h4>Use Cases:</h4>
+                      <ul>
+                        <li>Fraud detection and suspicious activity identification</li>
+                        <li>Portfolio performance tracking</li>
+                        <li>Transaction cost optimization</li>
+                        <li>Behavioral pattern recognition</li>
+                      </ul>
+                      
+                      <div className="warning">
+                        <strong>Note:</strong> Analytics are based on on-chain data only and should be used as investigative tools, not definitive proof.
+                      </div>
+                    </InfoButton>
+                  </div>
                   <div className="analytics-buttons">
                     <button 
                       className={`analysis-toggle ${showAnalysis ? 'active' : ''}`} 
                       onClick={() => {
                         setShowAnalysis(!showAnalysis);
                         if (!showAnalysis) {
-                          setShowContractAnalysis(false);
                           setShowGasAnalysis(false);
-                          setShowIdentityClustering(false);
                           setShowProfitLossAnalysis(false);
                         }
                       }}
@@ -647,27 +747,11 @@ function App() {
                       {showAnalysis ? 'Hide Pattern Analysis' : 'Show Pattern Analysis'}
                     </button>
                     <button 
-                      className={`analysis-toggle ${showContractAnalysis ? 'active' : ''}`} 
-                      onClick={() => {
-                        setShowContractAnalysis(!showContractAnalysis);
-                        if (!showContractAnalysis) {
-                          setShowAnalysis(false);
-                          setShowGasAnalysis(false);
-                          setShowIdentityClustering(false);
-                          setShowProfitLossAnalysis(false);
-                        }
-                      }}
-                    >
-                      {showContractAnalysis ? 'Hide Contract Analysis' : 'Show Contract Analysis'}
-                    </button>
-                    <button 
                       className={`analysis-toggle ${showGasAnalysis ? 'active' : ''}`} 
                       onClick={() => {
                         setShowGasAnalysis(!showGasAnalysis);
                         if (!showGasAnalysis) {
                           setShowAnalysis(false);
-                          setShowContractAnalysis(false);
-                          setShowIdentityClustering(false);
                           setShowProfitLossAnalysis(false);
                         }
                       }}
@@ -675,28 +759,12 @@ function App() {
                       {showGasAnalysis ? 'Hide Gas Analysis' : 'Show Gas Analysis'}
                     </button>
                     <button 
-                      className={`analysis-toggle ${showIdentityClustering ? 'active' : ''}`} 
-                      onClick={() => {
-                        setShowIdentityClustering(!showIdentityClustering);
-                        if (!showIdentityClustering) {
-                          setShowAnalysis(false);
-                          setShowContractAnalysis(false);
-                          setShowGasAnalysis(false);
-                          setShowProfitLossAnalysis(false);
-                        }
-                      }}
-                    >
-                      {showIdentityClustering ? 'Hide Identity Clustering' : 'Show Identity Clustering'}
-                    </button>
-                    <button 
                       className={`analysis-toggle ${showProfitLossAnalysis ? 'active' : ''}`} 
                       onClick={() => {
                         setShowProfitLossAnalysis(!showProfitLossAnalysis);
                         if (!showProfitLossAnalysis) {
                           setShowAnalysis(false);
-                          setShowContractAnalysis(false);
                           setShowGasAnalysis(false);
-                          setShowIdentityClustering(false);
                         }
                       }}
                     >
@@ -712,22 +780,8 @@ function App() {
                     />
                   )}
                   
-                  {showContractAnalysis && (
-                    <ContractInteractions 
-                      searchAddress={searchAddress}
-                    />
-                  )}
-
                   {showGasAnalysis && (
                     <GasUsageAnalysis
-                      transactions={transactions}
-                      searchAddress={searchAddress}
-                    />
-                  )}
-                  
-                  {showIdentityClustering && (
-                    <IdentityClustering
-                      transferPartners={transferPartners}
                       transactions={transactions}
                       searchAddress={searchAddress}
                     />
@@ -745,7 +799,41 @@ function App() {
               {/* Transfer Partners List */}
               <div className="results-section">
                 <div className="results-header">
-                  <h3>Transfer Partners</h3>
+                  <h3>
+                    Transfer Partners
+                    <InfoButton title="About Transfer Partners">
+                      <h3>Transfer Partners Analysis</h3>
+                      <p>Complete list of all addresses that have sent or received ETH with your target address.</p>
+                      
+                      <h4>Key Information:</h4>
+                      <div className="feature-list">
+                        <div className="feature-item">
+                          <strong>Address:</strong> The partner's Ethereum address
+                        </div>
+                        <div className="feature-item">
+                          <strong>Sent:</strong> Total ETH sent from target to partner
+                        </div>
+                        <div className="feature-item">
+                          <strong>Received:</strong> Total ETH received from partner
+                        </div>
+                        <div className="feature-item">
+                          <strong>Total Volume:</strong> Combined sent + received amounts
+                        </div>
+                      </div>
+                      
+                      <h4>Features:</h4>
+                      <ul>
+                        <li><strong>Sorting:</strong> Click column headers to sort by different criteria</li>
+                        <li><strong>Anomaly Detection:</strong> Addresses with unusual patterns are highlighted</li>
+                        <li><strong>Detailed View:</strong> Click any row for transaction details</li>
+                        <li><strong>Export:</strong> Download data as JSON for further analysis</li>
+                      </ul>
+                      
+                      <div className="tip">
+                        <strong>Tip:</strong> Look for addresses with high volume or anomaly indicators for potentially interesting relationships.
+                      </div>
+                    </InfoButton>
+                  </h3>
                   
                   {/* Anomaly filter toggle */}
                   <div className="filter-controls">
@@ -755,7 +843,32 @@ function App() {
                         checked={showOnlyAnomalies} 
                         onChange={(e) => setShowOnlyAnomalies(e.target.checked)}
                       />
-                      <span>Show only anomalies</span>
+                      <span>
+                        Show only anomalies
+                        <InfoButton title="About Anomalies">
+                          <h3>Anomaly Detection</h3>
+                          <p>Automatically identified unusual transaction patterns that may indicate:</p>
+                          
+                          <h4>Types of Anomalies:</h4>
+                          <ul>
+                            <li><strong>Large Transfers:</strong> Transactions significantly above average amounts</li>
+                            <li><strong>Unusual Timing:</strong> Rapid-fire transactions or irregular patterns</li>
+                            <li><strong>Irregular Patterns:</strong> Behavior that deviates from normal transaction flows</li>
+                          </ul>
+                          
+                          <h4>Use Cases:</h4>
+                          <ul>
+                            <li>Identify potential fraud or manipulation</li>
+                            <li>Spot automated trading behaviors</li>
+                            <li>Find addresses worth deeper investigation</li>
+                            <li>Detect unusual market activities</li>
+                          </ul>
+                          
+                          <div className="warning">
+                            <strong>Important:</strong> Anomalies are statistical indicators, not proof of wrongdoing. Always investigate further before drawing conclusions.
+                          </div>
+                        </InfoButton>
+                      </span>
                     </label>
                   </div>
                 </div>
@@ -869,7 +982,7 @@ function App() {
       </main>
 
       <footer className="app-footer mt-8 py-4 border-t border-gray-200">
-        <p className="text-center text-gray-500 text-sm">Blockchain Transfer History Explorer &copy; 2025</p>
+        <p className="text-center text-gray-500 text-sm">EtherFlow &copy; 2025 - Ethereum Transaction Analysis</p>
       </footer>
       
       {selectedPartner && (

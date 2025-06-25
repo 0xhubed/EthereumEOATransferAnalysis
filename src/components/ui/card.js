@@ -1,5 +1,8 @@
 import React from "react";
-import { cn } from "./registry";
+
+const cn = (...classes) => {
+  return classes.filter(Boolean).join(' ');
+};
 
 const Card = React.forwardRef(({ className, ...props }, ref) => (
   <div
@@ -20,6 +23,7 @@ const CardHeader = React.forwardRef(({ className, ...props }, ref) => (
 CardHeader.displayName = "CardHeader";
 
 const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
+  // eslint-disable-next-line jsx-a11y/heading-has-content
   <h3
     ref={ref}
     className={cn("text-2xl font-semibold leading-none tracking-tight", className)}

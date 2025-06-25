@@ -47,9 +47,9 @@
 }
 
 .time-filter-buttons button.active {
-  background-color: #2563eb;
+  background-color: #333;
   color: white;
-  border-color: #2563eb;
+  border-color: #333;
 }
 
 .timeline-chart-container {
@@ -84,7 +84,7 @@
 }
 
 .tooltip-partner {
-  color: #aaddff;
+  color: #ccc;
 }
 
 .tooltip-value {
@@ -101,11 +101,11 @@
 }
 
 .transaction-point.sent {
-  fill: #ff9999;
+  fill: #999;
 }
 
 .transaction-point.received {
-  fill: #99ff99;
+  fill: #ccc;
 }
 
 .timeline-legend {
@@ -130,12 +130,12 @@
 }
 
 .dot.sent {
-  background-color: #ff9999;
+  background-color: #999;
   border: 1px solid #444;
 }
 
 .dot.received {
-  background-color: #99ff99;
+  background-color: #ccc;
   border: 1px solid #444;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .error-message {
-  fill: #d63031;
+  fill: #333;
   font-weight: bold;
 }
 

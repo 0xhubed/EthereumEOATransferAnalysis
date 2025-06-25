@@ -86,8 +86,8 @@
 .filter-tag {
   display: inline-block;
   padding: 4px 10px;
-  background-color: #e8f4fd;
-  color: #0066cc;
+  background-color: #f0f0f0;
+  color: #333;
   border-radius: 16px;
   font-size: 0.85rem;
   cursor: pointer;
@@ -95,11 +95,11 @@
 }
 
 .filter-tag:hover {
-  background-color: #cce7fd;
+  background-color: #e0e0e0;
 }
 
 .filter-tag.selected {
-  background-color: #0066cc;
+  background-color: #333;
   color: white;
 }
 
@@ -136,8 +136,8 @@
 }
 
 .search-item.selected {
-  background-color: #e8f4fd;
-  border-left: 4px solid #0066cc;
+  background-color: #f0f0f0;
+  border-left: 4px solid #333;
 }
 
 .search-item-header {
@@ -154,7 +154,7 @@
 }
 
 .delete-button {
-  color: #d32f2f;
+  color: #666;
   font-size: 0.8rem;
   padding: 2px 8px;
 }
@@ -187,8 +187,8 @@
 .search-tag {
   display: inline-block;
   padding: 2px 8px;
-  background-color: #edf7ed;
-  color: #2e7d32;
+  background-color: #f0f0f0;
+  color: #333;
   border-radius: 12px;
   font-size: 0.75rem;
 }
@@ -272,8 +272,8 @@
   display: inline-flex;
   align-items: center;
   padding: 4px 10px;
-  background-color: #edf7ed;
-  color: #2e7d32;
+  background-color: #f0f0f0;
+  color: #333;
   border-radius: 16px;
   font-size: 0.85rem;
 }
@@ -282,7 +282,7 @@
   margin-left: 5px;
   background: none;
   border: none;
-  color: #2e7d32;
+  color: #333;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -291,7 +291,7 @@
 }
 
 .remove-tag:hover {
-  color: #d32f2f;
+  color: #666;
 }
 
 .add-tag {
