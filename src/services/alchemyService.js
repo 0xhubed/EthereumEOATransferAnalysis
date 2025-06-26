@@ -42,7 +42,7 @@ export const initializeAlchemy = (userApiKey = null, network = Network.ETH_MAINN
 export const checkDemoUsage = () => {
   if (isUsingDemoAPI(currentApiKey)) {
     if (!canUseDemoAPI()) {
-      throw new Error("Demo usage limit exceeded. Please provide your own API key or refresh the page.");
+      throw new Error("🚫 Demo limit reached! You've used your 2 free searches. Please provide your own Alchemy API key to continue or refresh the page for a new session.");
     }
     // Increment usage counter for demo API calls
     const usage = incrementDemoUsage();

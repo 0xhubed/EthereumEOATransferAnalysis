@@ -194,19 +194,22 @@ function App() {
 
   const handleDemoAddressSelect = (address) => {
     setSearchAddress(address);
-    // Auto-trigger search for demo addresses
+    setError(''); // Clear any previous errors
+    // Auto-trigger search for demo addresses with the selected address
     setTimeout(() => {
-      fetchTransferHistory();
+      fetchTransferHistory(address);
     }, 100);
   };
   
-  const fetchTransferHistory = async () => {
+  const fetchTransferHistory = async (addressToSearch = null) => {
+    const targetAddress = addressToSearch || searchAddress;
+    
     if (!isAlchemyInitialized) {
       setError('Please initialize Alchemy SDK with your API key first.');
       return;
     }
     
-    if (!validateAddress(searchAddress)) {
+    if (!validateAddress(targetAddress)) {
       setError('Please enter a valid Ethereum address.');
       return;
     }
@@ -253,7 +256,7 @@ function App() {
       }
       
       // Fetch transactions using Alchemy SDK with optional time filters
-      const transactions = await getAddressTransactions(searchAddress, startTime, endTime);
+      const transactions = await getAddressTransactions(targetAddress, startTime, endTime);
       
       // Process transactions to find unique EOAs and transfer amounts
       const partners = processTransferPartners(transactions);
@@ -274,7 +277,7 @@ function App() {
       setShowProfitLossAnalysis(false);
       
       // Auto-save this search with extended information
-      saveSearch(searchAddress, '', {
+      saveSearch(targetAddress, '', {
         timeFilter: timeFilter.enabled ? {
           startBlock: timeFilter.startBlock,
           endBlock: timeFilter.endBlock
@@ -369,7 +372,7 @@ function App() {
       <header className="app-header">
         <h1 className="text-2xl md:text-3xl font-bold mb-1">EtherFlow</h1>
         <p className="text-lg text-gray-300 mb-2">Ethereum Transaction Analysis Made Simple</p>
-        {error && <p className="text-red-500 bg-red-50 p-2 rounded-md">{error}</p>}
+        {error && <p className="text-red-100 bg-red-900 p-3 rounded-md border border-red-700 font-medium">{error}</p>}
       </header>
 
       <main className="app-main">
@@ -417,8 +420,8 @@ function App() {
             />
             
             {!isAlchemyInitialized && (
-              <div className="bg-red-50 p-4 mb-4 rounded-md border border-red-200">
-                <p className="text-red-600">No API key available. Please use the demo mode above or provide your own Alchemy API key.</p>
+              <div className="bg-red-900 p-4 mb-4 rounded-md border border-red-700">
+                <p className="text-red-100 font-medium">No API key available. Please use the demo mode above or provide your own Alchemy API key.</p>
               </div>
             )}
             
@@ -457,6 +460,7 @@ function App() {
                     onClick={() => setShowSavedSearches(!showSavedSearches)} 
                     variant="outline"
                     size="sm"
+                    className="search-management-button"
                   >
                     {showSavedSearches ? 'Hide Saved Searches' : 'Quick Search History'}
                   </Button>
@@ -464,6 +468,7 @@ function App() {
                     onClick={() => setShowSavedSearchManager(true)} 
                     variant="secondary"
                     size="sm"
+                    className="search-management-button"
                   >
                     Manage Saved Searches
                   </Button>
@@ -495,7 +500,7 @@ function App() {
                             }}
                             variant="outline"
                             size="sm"
-                            className="text-red-500"
+                            className="text-red-500 search-management-button"
                           >
                             Delete
                           </Button>
@@ -679,29 +684,28 @@ function App() {
               )}
               
               {/* Selected Visualization */}
-              {transferPartners.length > 0 && visualizationMode === 'standard' && (
+              {transferPartners && Array.isArray(transferPartners) && transferPartners.length > 0 && visualizationMode === 'standard' && searchAddress && (
                 <TransferGraphD3 
                   transferPartners={transferPartners} 
                   searchAddress={searchAddress}
                 />
               )}
               
-              {transferPartners.length > 0 && visualizationMode === 'timeline' && (
+              {transferPartners && Array.isArray(transferPartners) && transferPartners.length > 0 && visualizationMode === 'timeline' && searchAddress && (
                 <TimelineVisualization
                   transferPartners={transferPartners}
                   searchAddress={searchAddress}
                 />
               )}
               
-              
-              {transferPartners.length > 0 && visualizationMode === 'heatmap' && (
+              {transferPartners && Array.isArray(transferPartners) && transferPartners.length > 0 && visualizationMode === 'heatmap' && searchAddress && (
                 <TransactionVolumeHeatmap
                   transferPartners={transferPartners}
                   searchAddress={searchAddress}
                 />
               )}
               
-              {transferPartners.length > 0 && visualizationMode === 'treemap' && (
+              {transferPartners && Array.isArray(transferPartners) && transferPartners.length > 0 && visualizationMode === 'treemap' && searchAddress && (
                 <TreeMapVisualization
                   data={(() => {
                     // First try to process the actual data
@@ -724,7 +728,7 @@ function App() {
               )}
               
               {/* Advanced Analytics */}
-              {transferPartners.length > 0 && (
+              {transferPartners && Array.isArray(transferPartners) && transferPartners.length > 0 && (
                 <div className="analytics-section">
                   <div className="analytics-header">
                     <h3>Advanced Analytics</h3>
@@ -995,6 +999,7 @@ function App() {
                 }}
                 variant="outline"
                 size="sm"
+                className="search-management-button"
               >
                 Export JSON
               </Button>

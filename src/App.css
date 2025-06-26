@@ -23,6 +23,85 @@ body {
   background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
 }
 
+/* Specific styling for search management buttons - Multiple selectors for maximum coverage */
+.search-management-button,
+button.search-management-button,
+.app .search-management-button,
+.app button.search-management-button,
+[class*="search-management-button"],
+button[class*="search-management-button"] {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #cccccc !important;
+  font-weight: 500 !important;
+}
+
+/* Even more aggressive targeting for these specific buttons */
+.app .flex.space-x-2 button,
+.app .flex.space-x-2 .search-management-button,
+.app .space-x-2 button,
+.app div[class*="space-x-2"] button {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #cccccc !important;
+}
+
+.search-management-button:hover:not(:disabled),
+button.search-management-button:hover:not(:disabled),
+.app .search-management-button:hover:not(:disabled),
+.app button.search-management-button:hover:not(:disabled),
+.app .flex.space-x-2 button:hover:not(:disabled),
+.app .space-x-2 button:hover:not(:disabled),
+.app div[class*="space-x-2"] button:hover:not(:disabled) {
+  background: #f0f0f0 !important;
+  color: #000000 !important;
+  border-color: #999999 !important;
+}
+
+.search-management-button:disabled,
+button.search-management-button:disabled,
+.app .search-management-button:disabled,
+.app button.search-management-button:disabled {
+  background: #555555 !important;
+  color: #999999 !important;
+  border-color: #444444 !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Special styling for delete button - keep red color */
+.app .search-management-button.text-red-500 {
+  color: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+.app .search-management-button.text-red-500:hover:not(:disabled) {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+/* Exception for specific styled buttons that should remain as-is */
+.app .analysis-toggle,
+.app .visualization-buttons button,
+.app .details-button {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #3b82f6 !important;
+}
+
+.app .analysis-toggle:hover:not(:disabled),
+.app .visualization-buttons button:hover:not(:disabled),
+.app .details-button:hover:not(:disabled) {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+.app .analysis-toggle.active {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
 .app-header {
   background: linear-gradient(135deg, #000000 0%, #2a2a2a 100%);
   padding: 1.5rem;

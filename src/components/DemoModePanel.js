@@ -58,7 +58,7 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
                 <span className="status-indicator active">✅</span>
                 <span className="text-sm font-medium">Using your API key</span>
               </div>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-400 mt-1">
                 Unlimited usage with your personal Alchemy API key
               </p>
               <Button 
@@ -82,17 +82,17 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
               </div>
               
               {demoStatus.isExhausted ? (
-                <div className="exhausted-message mt-2 p-3 bg-orange-50 border border-orange-200 rounded">
-                  <p className="text-sm text-orange-800">
+                <div className="exhausted-message mt-2 p-3 rounded">
+                  <p className="text-sm font-semibold">
                     🚫 Demo limit reached! To continue using EtherFlow:
                   </p>
-                  <div className="mt-2 space-y-1 text-xs text-orange-700">
-                    <p>• Get a free API key from <a href="https://www.alchemy.com/" target="_blank" rel="noopener noreferrer" className="underline">Alchemy</a></p>
+                  <div className="mt-2 space-y-1 text-xs">
+                    <p>• Get a free API key from <a href="https://www.alchemy.com/" target="_blank" rel="noopener noreferrer" className="underline text-white hover:text-blue-200">Alchemy</a></p>
                     <p>• Or refresh the page for a new session</p>
                   </div>
                 </div>
               ) : (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-400 mt-1">
                   Try the app with pre-loaded demo addresses below
                 </p>
               )}
@@ -103,7 +103,7 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
                 <span className="status-indicator inactive">⚠️</span>
                 <span className="text-sm font-medium">No API key available</span>
               </div>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-400 mt-1">
                 You'll need an Alchemy API key to use the app
               </p>
             </div>
@@ -165,7 +165,7 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
                       <div className="address-name text-xs font-medium">
                         {index === 0 && "Vitalik Buterin"}
                         {index === 1 && "Binance Hot Wallet"}
-                        {index === 2 && "Uniswap Router"}
+                        {index === 2 && "High-Volume Wallet"}
                       </div>
                       <div className="address-value text-xs text-gray-500 font-mono">
                         {address.slice(0, 20)}...
@@ -188,14 +188,14 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
         )}
 
         {/* Help Text */}
-        <div className="help-text mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
-          <p className="text-xs text-blue-800">
+        <div className="help-text mt-4 p-3 rounded">
+          <p className="text-xs">
             💡 <strong>New to Alchemy?</strong> Get a free API key in 2 minutes at{' '}
             <a 
               href="https://www.alchemy.com/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="underline"
+              className="underline text-white hover:text-blue-200"
             >
               alchemy.com
             </a>{' '}

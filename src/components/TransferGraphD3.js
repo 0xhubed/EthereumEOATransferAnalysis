@@ -13,10 +13,20 @@ const TransferGraphD3 = ({ transferPartners, searchAddress }) => {
   });
 
   useEffect(() => {
-    if (!svgRef.current || !containerRef.current || !transferPartners || transferPartners.length === 0) return;
+    if (!svgRef.current || !containerRef.current || !transferPartners || !Array.isArray(transferPartners) || transferPartners.length === 0) {
+      console.log('TransferGraphD3: Missing required data or DOM elements');
+      return;
+    }
+
+    if (!searchAddress || typeof searchAddress !== 'string') {
+      console.log('TransferGraphD3: Invalid searchAddress');
+      return;
+    }
 
     // Clear previous content
     d3.select(svgRef.current).selectAll('*').remove();
+
+    let simulation; // Declare simulation variable for cleanup
 
     // Set up responsive dimensions
     const containerWidth = containerRef.current.clientWidth;
@@ -48,17 +58,28 @@ const TransferGraphD3 = ({ transferPartners, searchAddress }) => {
       ...transferPartners.map(p => Math.max(p.totalSent || 0, p.totalReceived || 0, 0.001))
     );
 
+    // Limit the number of nodes for performance (show top partners by value)
+    const maxNodes = 200; // Reasonable limit for visualization
+    const sortedPartners = transferPartners
+      .map(partner => ({
+        ...partner,
+        totalValue: (partner.totalSent || 0) + (partner.totalReceived || 0)
+      }))
+      .sort((a, b) => b.totalValue - a.totalValue)
+      .slice(0, maxNodes);
+
+    console.log('TransferGraphD3: Using top', sortedPartners.length, 'partners out of', transferPartners.length);
+
     // Add partner nodes
-    transferPartners.forEach((partner, index) => {
-      const totalValue = (partner.totalSent || 0) + (partner.totalReceived || 0);
-      const nodeSize = 8 + (totalValue / maxValue) * 15;
+    sortedPartners.forEach((partner, index) => {
+      const nodeSize = 8 + (partner.totalValue / maxValue) * 15;
 
       nodes.push({
         id: partner.address,
         type: 'partner',
         partner: partner,
         size: nodeSize,
-        totalValue: totalValue,
+        totalValue: partner.totalValue,
         hasAnomaly: partner.anomalies?.hasAnomalies || false
       });
 
@@ -82,14 +103,69 @@ const TransferGraphD3 = ({ transferPartners, searchAddress }) => {
       }
     });
 
-    // Create force simulation
-    const simulation = d3.forceSimulation(nodes)
-      .force('link', d3.forceLink(links)
-        .id(d => d.id)
-        .distance(100))
-      .force('charge', d3.forceManyBody().strength(-200))
-      .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collide', d3.forceCollide(d => d.size + 5));
+    // Validate data before creating force simulation
+    if (!nodes || nodes.length === 0) {
+      console.log('TransferGraphD3: No nodes to render');
+      return;
+    }
+
+    if (!links) {
+      console.log('TransferGraphD3: Links array is null');
+      return;
+    }
+
+    // Ensure all nodes have required properties
+    nodes.forEach((node, index) => {
+      if (!node.id) {
+        console.error('TransferGraphD3: Node missing id', node);
+        node.id = `node-${index}`;
+      }
+      if (typeof node.size !== 'number') {
+        node.size = 10;
+      }
+    });
+
+    // Create a map of node IDs for faster lookup
+    const nodeIdMap = new Map();
+    nodes.forEach(node => {
+      if (nodeIdMap.has(node.id)) {
+        console.warn('TransferGraphD3: Duplicate node ID found:', node.id);
+      }
+      nodeIdMap.set(node.id, node);
+    });
+
+    // Ensure all links have valid source and target
+    const validLinks = links.filter(link => {
+      const hasValidSource = nodeIdMap.has(link.source);
+      const hasValidTarget = nodeIdMap.has(link.target);
+      
+      if (!hasValidSource) {
+        console.warn('TransferGraphD3: Link has invalid source:', link.source);
+      }
+      if (!hasValidTarget) {
+        console.warn('TransferGraphD3: Link has invalid target:', link.target);
+      }
+      
+      return hasValidSource && hasValidTarget && link.source !== link.target; // Avoid self-loops
+    });
+
+    console.log('TransferGraphD3: Creating simulation with', nodes.length, 'nodes and', validLinks.length, 'links');
+
+    // Create force simulation with error handling
+    try {
+      simulation = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(validLinks)
+          .id(d => d.id)
+          .distance(100))
+        .force('charge', d3.forceManyBody().strength(-200))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('collide', d3.forceCollide(d => d.size + 5));
+    } catch (error) {
+      console.error('TransferGraphD3: Error creating force simulation:', error);
+      console.log('Nodes:', nodes);
+      console.log('Valid Links:', validLinks);
+      return;
+    }
 
     // Add arrow markers
     const defs = svg.append('defs');
@@ -121,7 +197,7 @@ const TransferGraphD3 = ({ transferPartners, searchAddress }) => {
     // Draw links
     const link = svg.append('g')
       .selectAll('line')
-      .data(links)
+      .data(validLinks)
       .enter()
       .append('line')
       .attr('stroke-width', d => Math.max(1, Math.min(8, (d.value / maxValue) * 6)))
@@ -184,9 +260,11 @@ const TransferGraphD3 = ({ transferPartners, searchAddress }) => {
         }
         
         // Highlight connected links
-        link.attr('opacity', l => 
-          (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.1
-        );
+        link.attr('opacity', l => {
+          const sourceId = l.source && typeof l.source === 'object' ? l.source.id : l.source;
+          const targetId = l.target && typeof l.target === 'object' ? l.target.id : l.target;
+          return (sourceId === d.id || targetId === d.id) ? 1 : 0.1;
+        });
         
         // Highlight node
         d3.select(this).select('circle')
@@ -225,12 +303,32 @@ const TransferGraphD3 = ({ transferPartners, searchAddress }) => {
     // Update positions on simulation tick
     simulation.on('tick', () => {
       link
-        .attr('x1', d => d.source.x)
-        .attr('y1', d => d.source.y)
-        .attr('x2', d => d.target.x)
-        .attr('y2', d => d.target.y);
+        .attr('x1', d => {
+          if (d.source && typeof d.source === 'object' && typeof d.source.x === 'number') {
+            return d.source.x;
+          }
+          return 0;
+        })
+        .attr('y1', d => {
+          if (d.source && typeof d.source === 'object' && typeof d.source.y === 'number') {
+            return d.source.y;
+          }
+          return 0;
+        })
+        .attr('x2', d => {
+          if (d.target && typeof d.target === 'object' && typeof d.target.x === 'number') {
+            return d.target.x;
+          }
+          return 0;
+        })
+        .attr('y2', d => {
+          if (d.target && typeof d.target === 'object' && typeof d.target.y === 'number') {
+            return d.target.y;
+          }
+          return 0;
+        });
 
-      node.attr('transform', d => `translate(${d.x},${d.y})`);
+      node.attr('transform', d => `translate(${d.x || 0},${d.y || 0})`);
     });
 
     // Drag functions
@@ -255,7 +353,9 @@ const TransferGraphD3 = ({ transferPartners, searchAddress }) => {
 
     // Cleanup
     return () => {
-      simulation.stop();
+      if (simulation) {
+        simulation.stop();
+      }
     };
 
   }, [transferPartners, searchAddress]);
