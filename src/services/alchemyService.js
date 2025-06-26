@@ -1,24 +1,36 @@
 // Import the SDK dynamically to avoid chunk loading issues
 import * as alchemySdk from 'alchemy-sdk';
+import { getEffectiveApiKey, isUsingDemoAPI, incrementDemoUsage, canUseDemoAPI } from './demoService';
+
 const { Alchemy, Network } = alchemySdk;
 
 // Configuration will be set from environment variable
 let alchemy = null;
+let currentApiKey = null;
 
-// Initialize Alchemy SDK with API key
-export const initializeAlchemy = (apiKey = process.env.REACT_APP_ALCHEMY_API_KEY, network = Network.ETH_MAINNET) => {
-  if (!apiKey) {
-    console.error("No Alchemy API key provided");
+// Initialize Alchemy SDK with API key (supports demo mode)
+export const initializeAlchemy = (userApiKey = null, network = Network.ETH_MAINNET) => {
+  const effectiveApiKey = getEffectiveApiKey(userApiKey);
+  
+  if (!effectiveApiKey) {
+    console.error("No Alchemy API key available");
     throw new Error("Alchemy API key is required");
   }
   
   try {
     const settings = {
-      apiKey: apiKey,
+      apiKey: effectiveApiKey,
       network: network,
     };
     
     alchemy = new Alchemy(settings);
+    currentApiKey = effectiveApiKey;
+    
+    console.log("Alchemy SDK initialized", {
+      usingDemo: isUsingDemoAPI(effectiveApiKey),
+      network: network
+    });
+    
     return alchemy;
   } catch (error) {
     console.error("Error initializing Alchemy SDK:", error);
@@ -26,11 +38,28 @@ export const initializeAlchemy = (apiKey = process.env.REACT_APP_ALCHEMY_API_KEY
   }
 };
 
+// Check if demo API usage is allowed
+export const checkDemoUsage = () => {
+  if (isUsingDemoAPI(currentApiKey)) {
+    if (!canUseDemoAPI()) {
+      throw new Error("Demo usage limit exceeded. Please provide your own API key or refresh the page.");
+    }
+    // Increment usage counter for demo API calls
+    const usage = incrementDemoUsage();
+    console.log("Demo API call used:", usage);
+    return usage;
+  }
+  return null;
+};
+
 // Get transactions for a specific address with optional time range
 export const getAddressTransactions = async (address, startTime = null, endTime = null) => {
   if (!alchemy) {
     throw new Error('Alchemy SDK not initialized. Please provide API key first.');
   }
+  
+  // Check demo usage limits
+  checkDemoUsage();
   
   try {
     // Base query params

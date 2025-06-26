@@ -17,11 +17,13 @@ import TransactionVolumeHeatmap from './components/TransactionVolumeHeatmap';
 import TreeMapVisualization from './components/TreeMapVisualization';
 import ProfitLossAnalysis from './components/ProfitLossAnalysis';
 import SavedSearches from './components/SavedSearches';
+import DemoModePanel from './components/DemoModePanel';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Button } from './components/ui/button';
 import InfoButton from './components/ui/InfoButton';
 import { generateSampleTreeMapData, processTransfersForTreeMap } from './services/treeMapService';
+import { fetchCurrentEthPrice } from './services/profitLossService';
 
 function App() {
   const [error, setError] = useState('');
@@ -29,6 +31,7 @@ function App() {
   
   // Alchemy settings
   const [isAlchemyInitialized, setIsAlchemyInitialized] = useState(false);
+  const [userApiKey, setUserApiKey] = useState('');
   
   // Transfer data
   const [searchAddress, setSearchAddress] = useState('');
@@ -78,23 +81,24 @@ function App() {
   const [showOnlyAnomalies, setShowOnlyAnomalies] = useState(false);
 
   useEffect(() => {
-    // Auto-initialize Alchemy if API key exists in environment
-    if (process.env.REACT_APP_ALCHEMY_API_KEY) {
-      try {
-        initializeAlchemy();
-        setIsAlchemyInitialized(true);
-        console.log("Alchemy SDK initialized successfully");
-      } catch (error) {
-        console.error("Failed to initialize Alchemy SDK:", error);
-        setError("Failed to initialize Alchemy SDK. Check console for details.");
-      }
-    } else {
-      console.warn("No Alchemy API key found in environment variables");
+    // Initialize Alchemy with available API key (user's key, demo key, or env key)
+    try {
+      initializeAlchemy(userApiKey);
+      setIsAlchemyInitialized(true);
+      console.log("Alchemy SDK initialized successfully");
+    } catch (error) {
+      console.error("Failed to initialize Alchemy SDK:", error);
+      setError("Failed to initialize Alchemy SDK. Check console for details.");
     }
+    
+    // Fetch current ETH price at startup
+    fetchCurrentEthPrice().catch(error => {
+      console.warn("Failed to fetch ETH price at startup:", error);
+    });
     
     // Load saved searches
     setSavedSearches(getSavedSearches());
-  }, []);
+  }, [userApiKey]); // Re-initialize when API key changes
   
   // Handle time filter changes
   const handleTimeFilterChange = (e) => {
@@ -180,6 +184,20 @@ function App() {
     
     // Fetch transfer history with the loaded search parameters
     fetchTransferHistory();
+  };
+
+  // Demo mode handlers
+  const handleApiKeyChange = (apiKey) => {
+    setUserApiKey(apiKey);
+    setError(''); // Clear any previous errors
+  };
+
+  const handleDemoAddressSelect = (address) => {
+    setSearchAddress(address);
+    // Auto-trigger search for demo addresses
+    setTimeout(() => {
+      fetchTransferHistory();
+    }, 100);
   };
   
   const fetchTransferHistory = async () => {
@@ -391,9 +409,16 @@ function App() {
           </CardHeader>
           
           <CardContent>
+            {/* Demo Mode Panel */}
+            <DemoModePanel 
+              onApiKeyChange={handleApiKeyChange}
+              onDemoAddressSelect={handleDemoAddressSelect}
+              userApiKey={userApiKey}
+            />
+            
             {!isAlchemyInitialized && (
               <div className="bg-red-50 p-4 mb-4 rounded-md border border-red-200">
-                <p className="text-red-600">Alchemy API key not found in environment variables. Please check your .env file.</p>
+                <p className="text-red-600">No API key available. Please use the demo mode above or provide your own Alchemy API key.</p>
               </div>
             )}
             

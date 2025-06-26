@@ -5,6 +5,35 @@
  * for Ethereum wallets and transactions.
  */
 
+// Current ETH price cache
+let currentEthPrice = 3500; // Fallback price
+
+/**
+ * Fetch current ETH price from CoinGecko API (no API key required)
+ * Falls back to default if API fails
+ */
+export const fetchCurrentEthPrice = async () => {
+  try {
+    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+    const data = await response.json();
+    
+    if (data.ethereum && data.ethereum.usd) {
+      currentEthPrice = data.ethereum.usd;
+      console.log(`Updated ETH price: $${currentEthPrice}`);
+      return currentEthPrice;
+    }
+  } catch (error) {
+    console.warn('Failed to fetch ETH price, using fallback:', error);
+  }
+  
+  return currentEthPrice;
+};
+
+/**
+ * Get the current cached ETH price
+ */
+export const getCurrentEthPrice = () => currentEthPrice;
+
 // Mock API for price history fetching
 // In a production app, you would replace this with a real API 
 // like CoinGecko, CryptoCompare, or similar
@@ -83,7 +112,9 @@ export const getHistoricalPrice = async (date) => {
  * @param {number} currentPrice - Current ETH price in USD
  * @returns {Object} Transaction with profit/loss data
  */
-export const calculateTransactionProfitLoss = async (transaction, currentPrice = 3500) => {
+export const calculateTransactionProfitLoss = async (transaction, currentPrice = null) => {
+  // Use fetched price if currentPrice not provided
+  const ethPrice = currentPrice || getCurrentEthPrice();
   if (!transaction) return null;
   
   const transactionType = transaction.from === transaction.address ? 'outgoing' : 'incoming';
@@ -97,8 +128,8 @@ export const calculateTransactionProfitLoss = async (transaction, currentPrice =
       ...transaction,
       transactionType,
       historicalPrice: null,
-      currentPrice,
-      currentValue: value * currentPrice,
+      currentPrice: ethPrice,
+      currentValue: value * ethPrice,
       profitLoss: null,
       profitLossPercentage: null,
       roiDaily: null,
@@ -107,7 +138,7 @@ export const calculateTransactionProfitLoss = async (transaction, currentPrice =
   }
   
   const historicalValue = value * historicalPrice;
-  const currentValue = value * currentPrice;
+  const currentValue = value * ethPrice;
   
   // Calculate profit/loss
   let profitLoss = 0;
@@ -144,7 +175,7 @@ export const calculateTransactionProfitLoss = async (transaction, currentPrice =
     transactionType,
     historicalPrice,
     historicalValue,
-    currentPrice,
+    currentPrice: ethPrice,
     currentValue,
     profitLoss,
     profitLossPercentage,
@@ -161,7 +192,9 @@ export const calculateTransactionProfitLoss = async (transaction, currentPrice =
  * @param {number} currentPrice - Current ETH price in USD
  * @returns {Object} Analysis results
  */
-export const analyzeProfitLoss = async (transactions, address, currentPrice = 3500) => {
+export const analyzeProfitLoss = async (transactions, address, currentPrice = null) => {
+  // Use fetched price if currentPrice not provided
+  const ethPrice = currentPrice || getCurrentEthPrice();
   if (!transactions || !address) {
     return {
       totalReceived: 0,
@@ -228,7 +261,7 @@ export const analyzeProfitLoss = async (transactions, address, currentPrice = 35
     const txWithPL = await calculateTransactionProfitLoss({
       ...tx,
       address
-    }, currentPrice);
+    }, ethPrice);
     
     transactionsWithPL.push(txWithPL);
   }
@@ -291,7 +324,7 @@ export const analyzeProfitLoss = async (transactions, address, currentPrice = 35
   
   // Calculate overall ROI
   const totalInvestment = totalReceivedHistorical;
-  const currentPortfolioValue = netBalance * currentPrice;
+  const currentPortfolioValue = netBalance * ethPrice;
   const overallROI = totalInvestment > 0 ? ((currentPortfolioValue - totalInvestment) / totalInvestment) * 100 : 0;
   
   return {
@@ -317,7 +350,9 @@ export const analyzeProfitLoss = async (transactions, address, currentPrice = 35
  * @param {number} currentPrice - Current ETH price in USD
  * @returns {Object[]} Time-series data points
  */
-export const generatePortfolioTimeSeries = async (transactions, address, currentPrice = 3500) => {
+export const generatePortfolioTimeSeries = async (transactions, address, currentPrice = null) => {
+  // Use fetched price if currentPrice not provided
+  const ethPrice = currentPrice || getCurrentEthPrice();
   if (!transactions || !address) {
     return [];
   }
@@ -407,8 +442,8 @@ export const generatePortfolioTimeSeries = async (transactions, address, current
     
     lastPoint.timestamp = now.getTime();
     lastPoint.date = now.toISOString();
-    lastPoint.ethPrice = currentPrice;
-    lastPoint.portfolioValue = lastPoint.ethBalance * currentPrice;
+    lastPoint.ethPrice = ethPrice;
+    lastPoint.portfolioValue = lastPoint.ethBalance * ethPrice;
     lastPoint.profitLoss = lastPoint.portfolioValue - lastPoint.cumulativeCost;
     lastPoint.roi = lastPoint.cumulativeCost > 0 ? (lastPoint.profitLoss / lastPoint.cumulativeCost) * 100 : 0;
     
@@ -490,6 +525,8 @@ export const aggregatePortfolioTimeSeries = (timeSeriesData) => {
 };
 
 export default {
+  fetchCurrentEthPrice,
+  getCurrentEthPrice,
   getHistoricalPrice,
   calculateTransactionProfitLoss,
   analyzeProfitLoss,

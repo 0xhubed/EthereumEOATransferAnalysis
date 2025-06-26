@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Card } from './ui/card';
 import './ProfitLossAnalysis.css';
-import { analyzeProfitLoss, generatePortfolioTimeSeries, aggregatePortfolioTimeSeries } from '../services/profitLossService';
+import { analyzeProfitLoss, generatePortfolioTimeSeries, aggregatePortfolioTimeSeries, getCurrentEthPrice } from '../services/profitLossService';
 
 const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,7 +10,7 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
   const [timeSeriesData, setTimeSeriesData] = useState({ daily: [], monthly: [] });
   const [activeTab, setActiveTab] = useState('summary');
   const [timeRange, setTimeRange] = useState('all');
-  const [currentPrice, setCurrentPrice] = useState(3500); // Default current ETH price
+  const [currentPrice, setCurrentPrice] = useState(getCurrentEthPrice()); // Use fetched ETH price
 
   const valueChartRef = useRef(null);
   const roiChartRef = useRef(null);
@@ -49,11 +49,8 @@ const ProfitLossAnalysis = ({ transactions, searchAddress }) => {
       }
       
       try {
-        // In a real app, you would fetch the current price from an API
-        // const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
-        // const data = await response.json();
-        // const ethPrice = data.ethereum.usd;
-        const ethPrice = 3500; // Mock current ETH price
+        // Use the current ETH price from the service
+        const ethPrice = getCurrentEthPrice();
         setCurrentPrice(ethPrice);
         
         console.log("Analyzing transactions:", {

@@ -1,44 +1,42 @@
-# Blockchain Transfer History Explorer
+# EtherFlow - Ethereum Transaction Analysis Made Simple
 
-A web application that allows users to explore transfer history between Ethereum addresses. This app specializes in showing all Externally Owned Accounts (EOAs) that a specific address has directly transferred coins with, along with the transfer amounts.
+EtherFlow is a comprehensive web application for analyzing Ethereum transaction patterns and relationships. It provides powerful tools to visualize, analyze, and understand ETH transfer networks between addresses, featuring multiple visualization modes, advanced analytics, and anomaly detection.
 
 > **Note:** This project was generated with [Claude Code](https://claude.ai/code) as a learning project to demonstrate AI-assisted software development.
 
-## Core Features
+## Key Features
 
-- Search for any Ethereum address transfer history
-- Display all EOAs that have transferred ETH with the searched address
-- View detailed transaction history between addresses 
-- See total amounts sent and received between addresses
-- Save and manage search history with detailed notes and tags
-- Export transaction data in various formats
+### Core Analysis
+- **Address Search**: Analyze any Ethereum address for transfer patterns with EOAs (Externally Owned Accounts)
+- **Transfer Mapping**: View complete transfer relationships showing sent/received amounts
+- **Time Filtering**: Filter analysis by specific block ranges for targeted investigation
+- **Anomaly Detection**: Automatically identify unusual transaction patterns and suspicious activity
+- **Saved Searches**: Manage search history with custom names and restore previous analyses
 
-## Data Visualization Features
+### Data Export & Management  
+- **JSON Export**: Export complete transfer data for external analysis
+- **Search History**: Quick access to recent searches and saved analysis sessions
 
-- **Network Graph Visualization**: Interactive graph showing relationships between addresses
-- **Time-Based Analysis**: ✅ Timeline visualization showing how transfer patterns evolve over time
-- **Network Evolution**: ✅ Animated visualization showing how a transaction network grows over time
-- **3D Visualization**: ✅ Immersive 3D exploration of complex transaction networks
-- **Heat Maps**: ✅ Geographic distribution visualization of transaction patterns
-- **Anomaly Highlighting**: ✅ Visual emphasis on unusual transactions that deviate from normal patterns
+### Interactive Visualizations
+- **Standard Network Graph**: Interactive D3.js-powered node-link visualization showing address relationships
+- **Timeline Visualization**: Chronological view of transactions over time with filtering capabilities  
+- **Transaction Volume Heatmap**: Time-based patterns showing transaction density and volume
+- **Tree Map Visualization**: Hierarchical representation of transaction volumes and relationships
 
-## Advanced Analytics Features
-
-- **Transaction Pattern Recognition**: ✅ Automated identification of common transaction patterns
-- **Smart Contract Interaction Analysis**: ✅ Visualization of how addresses interact with smart contracts
-- **Wallet Profiling**: ✅ Automatic categorization of wallets based on behavior (trader, hodler, etc.)
-- **Risk Scoring**: ✅ Assigns risk scores to addresses based on transaction patterns
-- **Identity Clustering**: ✅ Groups addresses that likely belong to the same entity
-- **Gas Usage Analysis**: ✅ Visualizes gas spending patterns and efficiency
+### Advanced Analytics
+- **Pattern Analysis**: Automated detection of periodic transfers, round number patterns, and distribution behaviors
+- **Gas Usage Analysis**: Comprehensive gas spending analysis with optimization recommendations
+- **Profit/Loss Analysis**: Track net gains/losses and value flow over time
+- **Wallet Behavior Profiling**: Categorize addresses by behavior patterns (trader, holder, distributor, etc.)
+- **Risk Assessment**: Calculate risk scores based on transaction patterns and anomalies
 
 ## Technology Stack
 
-- React.js - Frontend framework
-- Alchemy SDK - For accessing Ethereum blockchain data
-- D3.js - For advanced data visualizations and interactive graphs
-- Three.js - For 3D visualizations (compatibility package)
-- Tailwind CSS - Utility-first CSS framework
-- shadcn/ui styled components - Modern UI component system
+- **Frontend**: React.js with modern hooks and state management
+- **Blockchain Data**: Alchemy SDK for reliable Ethereum network access
+- **Visualizations**: D3.js for interactive charts and network graphs
+- **Styling**: Tailwind CSS with custom shadcn/ui-inspired components
+- **Analytics**: Custom services for pattern analysis, gas optimization, and profit/loss tracking
 
 ## Prerequisites
 
@@ -49,45 +47,53 @@ A web application that allows users to explore transfer history between Ethereum
 ## Getting Started
 
 1. Clone the repository
-   ```
-   git clone https://github.com/yourusername/blockchain-web-app.git
-   cd blockchain-web-app
+   ```bash
+   git clone https://github.com/yourusername/etherflow.git
+   cd etherflow
    ```
 
 2. Install dependencies
-   ```
+   ```bash
    npm install
    ```
 
 3. Create a `.env` file in the root directory and add your Alchemy API key:
-   ```
+   ```bash
    REACT_APP_ALCHEMY_API_KEY=your-api-key-here
    ```
 
 4. Start the development server
-   ```
+   ```bash
    npm start
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Using the Application
+## How to Use EtherFlow
 
-1. The application will automatically use the Alchemy API key from your environment variables
-2. Enter an Ethereum address to search for in the search box
-3. View the list of EOAs that have transferred ETH with the searched address
-4. Click on any transfer partner to see detailed transaction history
-5. Use the visualization mode selector to switch between different views:
-   - Standard Network View: 2D graph visualization
-   - Timeline View: Time-based transaction history
-   - Network Evolution: See how the transaction network evolves over time
-   - 3D Visualization: Explore transactions in 3D space
-   - Heat Map: View geographic distribution of transactions
-6. Explore advanced analytics features:
-   - Pattern Analysis: View detected transaction patterns and wallet behavior profiles
-   - Contract Interactions: Analyze how addresses interact with smart contracts
-   - Gas Usage Analysis: Examine gas spending patterns and efficiency
-   - Identity Clustering: See groups of addresses that likely belong to the same entity
+### Basic Analysis
+1. **Setup**: The app automatically detects your Alchemy API key from environment variables
+2. **Search**: Enter any valid Ethereum address (0x format) in the search box
+3. **Filter**: Optionally enable time-based filtering using block numbers for targeted analysis
+4. **Analyze**: View the complete list of transfer partners with sent/received amounts
+
+### Visualization Options
+Switch between different visualization modes to explore your data:
+- **Standard Network**: Interactive graph showing address relationships
+- **Timeline View**: Chronological transaction history with time-based insights
+- **Volume Heatmap**: Visual patterns of transaction density over time
+- **Tree Map**: Hierarchical view of transaction volumes
+
+### Advanced Analytics
+Access powerful analysis tools:
+- **Pattern Analysis**: Detect periodic transfers, distribution patterns, and anomalies
+- **Gas Analysis**: Examine gas usage patterns and get optimization recommendations  
+- **Profit/Loss Analysis**: Track net value flow and portfolio performance over time
+
+### Data Management
+- **Save Searches**: Create named bookmarks for important addresses
+- **Export Data**: Download complete transfer data as JSON for external analysis
+- **Quick Access**: Use search history for rapid re-analysis of previous queries
 
 ## Obtaining an Alchemy API Key
 
@@ -98,79 +104,63 @@ To use this application, you'll need an Alchemy API key:
 3. Select the Ethereum network you want to use
 4. Copy your API key and use it in the application
 
-## UI Components Integration
+## Deployment
 
-This project uses a custom integration of shadcn-inspired UI components:
+EtherFlow can be easily deployed to Vercel or other static hosting platforms. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
 
-1. We've set up:
-   - Tailwind CSS with a custom configuration
-   - Core UI components like Button, Card, and Input
-   - CSS variables for theming
+### Quick Deploy to Vercel
 
-2. Components added:
-   - Button - Various styles and sizes for interactive elements
-   - Card - Container component with header, content, and footer sections
-   - Input - Form elements with consistent styling
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/etherflow&env=REACT_APP_ALCHEMY_API_KEY&envDescription=Alchemy%20API%20key%20for%20Ethereum%20data%20access&envLink=https://www.alchemy.com/)
 
-3. How components were integrated:
-   - Manual implementation of core shadcn-like components
-   - Custom design system with consistency across all elements
-   - Full compatibility with Tailwind utility classes
+**Important**: Since this is a client-side app, the API key will be visible to users. Use a free-tier Alchemy key and configure domain restrictions in your Alchemy dashboard for security.
 
-4. For adding more components, follow the pattern in `/src/components/ui/`
+## Architecture Overview
 
-## Advanced Visualizations & Analytics
+EtherFlow is built with a modular architecture for maintainability and extensibility:
 
-### Time-Based Analysis
-The timeline visualization allows users to see how transactions occur over time. Users can:
-- View transaction points plotted chronologically
-- Identify periods of high activity
-- Filter by different time periods (last 7 days, 4 weeks, 6 months, all time)
-- Hover over points to see transaction details
+### Component Structure
+- **Core App**: Main application logic and state management in `src/App.js`
+- **UI Components**: Reusable shadcn/ui-inspired components in `src/components/ui/`
+- **Analysis Components**: Specialized components for different analytics in `src/components/`
+- **Services**: Business logic and external API integration in `src/services/`
 
-### Network Evolution
-This visualization shows how a transaction network grows and changes over time:
-- Animated playback of network growth
-- Step-by-step view of how new partners are added 
-- Interactive timeline with play/pause controls
-- Detailed metrics about the network at each point in time
+### Key Services
+- **alchemyService.js**: Ethereum blockchain data fetching and processing
+- **patternAnalysisService.js**: Transaction pattern detection and wallet profiling
+- **gasAnalysisService.js**: Gas usage analysis and optimization recommendations
+- **profitLossService.js**: Portfolio performance and value flow tracking
+- **treeMapService.js**: Hierarchical data processing for tree map visualizations
 
-### 3D Visualization
-The 3D view provides an immersive way to explore complex transaction networks:
-- Interactive 3D space for exploring transaction relationships
-- Rotation controls for viewing the network from different angles
-- Node sizes scaled to represent transaction volumes
-- Visual indicators for anomalous transactions
-- Depth perception to better understand complex networks
+## Feature Details
 
-### Heat Maps
-The geographic distribution visualization provides insights into transaction patterns:
-- Color-coded regions based on transaction density
-- Multiple visualization modes (volume, count, anomalies)
-- Interactive regions with detailed statistics
-- Simulated geographic distribution for demonstration purposes
+### Timeline Analysis
+Chronological visualization reveals transaction patterns over time:
+- Interactive timeline with transaction points plotted by timestamp
+- Identify periods of high/low activity and behavioral changes
+- Hover interactions show detailed transaction information
+- Time period filtering for focused analysis
 
-### Transaction Pattern Analysis
-Advanced analytics to identify common transaction behaviors:
-- Detection of periodic/regular transfers
-- Round number pattern identification
-- Distribution and collection pattern detection
-- Identification of abnormally large transfers
-- Burst activity and cyclical behavior recognition
+### Pattern Recognition
+Automated detection of common transaction behaviors:
+- **Periodic Transfers**: Regular/scheduled payment patterns
+- **Round Numbers**: Preference for round transaction amounts
+- **Distribution Patterns**: Single source to multiple destinations
+- **Collection Patterns**: Multiple sources to single destination  
+- **Large Transfer Detection**: Transactions significantly above average amounts
 
-### Wallet Profiling & Risk Analysis
-Automated behavior analysis provides insights into wallet characteristics:
-- Wallet type classification (trader, hodler, distributor, etc.)
-- Behavioral pattern identification
-- Risk scoring based on transaction patterns
-- Anomaly detection and flagging
+### Gas Usage Insights
+Comprehensive analysis of transaction costs and efficiency:
+- Gas price trends and optimization opportunities
+- Transaction complexity analysis based on gas usage
+- Cost efficiency recommendations for future transactions
+- Comparative analysis against network averages
 
-### Identity Clustering
-Groups addresses that likely belong to the same entity:
-- Multiple clustering algorithms (temporal, co-spending, behavioral)
-- Confidence scoring for relationship strength
-- Detailed evidence for clustering decisions
-- Cluster-level risk assessment
+### Profit/Loss Tracking
+Portfolio performance analysis over time:
+- Net value flow calculations (inbound vs outbound)
+- Time-based P&L tracking with visual charts
+- ROI analysis for trading addresses
+- Value flow visualization between address relationships
 
 ## License
 
@@ -180,14 +170,32 @@ MIT
 
 *This project was built with the assistance of Claude Code, Anthropic's AI coding assistant. It demonstrates how AI-assisted development can rapidly implement complex visualizations and data analysis tools. The project serves as a learning resource for blockchain data analysis and AI-assisted software development.*
 
-## Current Development Status
+## Use Cases
 
-As of the latest update, we've implemented:
+EtherFlow is valuable for various Ethereum analysis scenarios:
 
-- ✅ Core transfer history exploration functionality
-- ✅ All planned data visualization features (Network Graph, Timeline, Evolution, 3D, Heat Maps)
-- ✅ Advanced analytics (Pattern Recognition, Contract Analysis, Wallet Profiling, Risk Scoring)
-- ✅ Identity Clustering for address relationship analysis
-- ✅ Search history management and data export capabilities
+### For Investigators & Analysts
+- **Fraud Investigation**: Detect suspicious patterns and trace fund flows
+- **Compliance Analysis**: Monitor address behavior for regulatory compliance
+- **Risk Assessment**: Evaluate counterparty risk based on transaction patterns
 
-See the [ENHANCEMENT_IDEAS.md](./ENHANCEMENT_IDEAS.md) file for a complete roadmap of implemented and planned features.
+### For Traders & Investors  
+- **Portfolio Analysis**: Track performance and value flows across addresses
+- **Due Diligence**: Research addresses before engaging in transactions
+- **Market Research**: Understand trading patterns and behaviors
+
+### For Researchers & Developers
+- **Behavioral Analysis**: Study transaction patterns and wallet behaviors
+- **Network Analysis**: Understand Ethereum transaction network topology
+- **Gas Optimization**: Research efficient transaction strategies
+
+## Development Status
+
+**Current Version**: Fully functional with all core features implemented
+- ✅ Complete transfer analysis and visualization suite
+- ✅ Advanced pattern recognition and anomaly detection  
+- ✅ Multi-mode visualizations (Network, Timeline, Heatmap, TreeMap)
+- ✅ Comprehensive analytics (Pattern, Gas, Profit/Loss analysis)
+- ✅ Search management and data export capabilities
+
+For future enhancements and feature requests, see [ENHANCEMENT_IDEAS.md](./ENHANCEMENT_IDEAS.md).
