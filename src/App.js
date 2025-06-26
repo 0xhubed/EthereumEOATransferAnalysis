@@ -256,7 +256,7 @@ function App() {
       }
       
       // Fetch transactions using Alchemy SDK with optional time filters
-      const transactions = await getAddressTransactions(targetAddress, startTime, endTime);
+      const transactions = await getAddressTransactions(targetAddress, startTime, endTime, userApiKey);
       
       // Process transactions to find unique EOAs and transfer amounts
       const partners = processTransferPartners(transactions);
@@ -385,20 +385,20 @@ function App() {
                 <p>Analyze Ethereum address transaction patterns and relationships with other addresses.</p>
                 
                 <h4>Key Features:</h4>
-                <div className="feature-list">
-                  <div className="feature-item">
-                    <strong>Address Analysis:</strong> View all EOA accounts that have transferred ETH with your target address
-                  </div>
-                  <div className="feature-item">
-                    <strong>Transaction Visualization:</strong> Multiple chart types to understand transfer patterns
-                  </div>
-                  <div className="feature-item">
-                    <strong>Anomaly Detection:</strong> Identify unusual transaction patterns automatically
-                  </div>
-                  <div className="feature-item">
-                    <strong>Time Filtering:</strong> Analyze specific time periods using block numbers
-                  </div>
-                </div>
+                <ul>
+                  <li><strong>Address Analysis:</strong> View all EOA accounts that have transferred ETH with your target address</li>
+                  <li><strong>Transaction Visualization:</strong> Multiple chart types to understand transfer patterns</li>
+                  <li><strong>Anomaly Detection:</strong> Identify unusual transaction patterns automatically</li>
+                  <li><strong>Time Filtering:</strong> Analyze specific time periods using block numbers</li>
+                </ul>
+                
+                <h4>How to Use:</h4>
+                <ul>
+                  <li>Enter an Ethereum address or select a demo address</li>
+                  <li>Optionally set time filters for specific analysis periods</li>
+                  <li>Explore visualizations and analytics features</li>
+                  <li>Export data for further analysis</li>
+                </ul>
                 
                 <div className="tip">
                   <strong>Tip:</strong> Use the time-based filtering to focus on specific periods of activity.
@@ -564,21 +564,31 @@ function App() {
                     Enable Time-Based Filtering
                     <InfoButton title="Time-Based Filtering">
                       <h3>Time-Based Filtering</h3>
-                      <p>Filter transactions by specific time periods using Ethereum block numbers.</p>
+                      <p>Filter transactions by specific time periods using Ethereum block numbers for precise analysis.</p>
+                      
+                      <h4>Block Number Format:</h4>
+                      <ul>
+                        <li>Must be a positive integer</li>
+                        <li>Example: <code>18000000</code></li>
+                        <li>Start block must be less than end block</li>
+                        <li>Leave empty to include all transactions</li>
+                      </ul>
                       
                       <h4>How It Works:</h4>
                       <ul>
                         <li><strong>Block Numbers:</strong> Each transaction occurs in a specific block</li>
                         <li><strong>Time Range:</strong> Set start and end blocks to focus analysis</li>
                         <li><strong>Precision:</strong> More accurate than timestamps for blockchain data</li>
+                        <li><strong>Filtering:</strong> Only transactions within the range are analyzed</li>
                       </ul>
                       
-                      <h4>Use Cases:</h4>
+                      <h4>Common Use Cases:</h4>
                       <ul>
-                        <li>Analyze activity during specific events</li>
-                        <li>Focus on recent transactions only</li>
-                        <li>Compare different time periods</li>
+                        <li>Analyze activity during specific events or market conditions</li>
+                        <li>Focus on recent transactions only (last few months)</li>
+                        <li>Compare different time periods for pattern analysis</li>
                         <li>Investigate suspicious activity windows</li>
+                        <li>Study behavior before/after major announcements</li>
                       </ul>
                       
                       <div className="tip">

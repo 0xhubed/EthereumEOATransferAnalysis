@@ -9,11 +9,17 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
   const [demoStatus, setDemoStatus] = useState(getDemoStatus());
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
   const [tempApiKey, setTempApiKey] = useState(userApiKey || '');
+  const [showExampleAddresses, setShowExampleAddresses] = useState(!userApiKey);
 
   useEffect(() => {
     // Update demo status when component mounts or demo usage changes
     setDemoStatus(getDemoStatus());
   }, []);
+
+  useEffect(() => {
+    // Auto-expand addresses in demo mode, auto-collapse in API mode
+    setShowExampleAddresses(!userApiKey);
+  }, [userApiKey]);
 
   const handleApiKeySubmit = () => {
     onApiKeyChange(tempApiKey);
@@ -35,7 +41,7 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
     <Card className="demo-mode-panel">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>🚀 Demo Mode</span>
+          <span>{userApiKey ? '🔑 API Configuration' : '🚀 Demo Mode'}</span>
           {process.env.NODE_ENV === 'development' && (
             <Button 
               onClick={handleResetDemo} 
@@ -81,7 +87,7 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
                 </span>
               </div>
               
-              {demoStatus.isExhausted ? (
+              {demoStatus.isExhausted && !userApiKey ? (
                 <div className="exhausted-message mt-2 p-3 rounded">
                   <p className="text-sm font-semibold">
                     🚫 Demo limit reached! To continue using EtherFlow:
@@ -153,11 +159,24 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
           </div>
         )}
 
-        {/* Demo Addresses */}
-        {demoStatus.hasDemoKey && (
+        {/* Example Addresses */}
+        {(demoStatus.hasDemoKey || userApiKey) && (
           <div className="demo-addresses">
-            <h4 className="text-sm font-medium mb-2">📋 Try these demo addresses:</h4>
-            <div className="space-y-2">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-medium">{userApiKey ? '📋 Example addresses:' : '📋 Try these demo addresses:'}</h4>
+              {userApiKey && (
+                <Button 
+                  onClick={() => setShowExampleAddresses(!showExampleAddresses)}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                >
+                  {showExampleAddresses ? 'Hide' : 'Show'}
+                </Button>
+              )}
+            </div>
+            {showExampleAddresses && (
+              <div className="space-y-2">
               {getDemoAddresses().map((address, index) => (
                 <div key={address} className="demo-address-item">
                   <div className="flex items-center justify-between">
@@ -173,35 +192,38 @@ const DemoModePanel = ({ onApiKeyChange, onDemoAddressSelect, userApiKey }) => {
                     </div>
                     <Button
                       onClick={() => handleDemoAddressClick(address)}
-                      disabled={demoStatus.isExhausted}
+                      disabled={demoStatus.isExhausted && !userApiKey}
                       variant="outline"
                       size="sm"
                       className="ml-2"
                     >
-                      Try
+                      {userApiKey ? 'Analyze' : 'Try'}
                     </Button>
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Help Text */}
-        <div className="help-text mt-4 p-3 rounded">
-          <p className="text-xs">
-            💡 <strong>New to Alchemy?</strong> Get a free API key in 2 minutes at{' '}
-            <a 
-              href="https://www.alchemy.com/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="underline text-white hover:text-blue-200"
-            >
-              alchemy.com
-            </a>{' '}
-            for unlimited usage.
-          </p>
-        </div>
+        {/* Help Text - Only show in Demo Mode */}
+        {!userApiKey && (
+          <div className="help-text mt-4 p-3 rounded">
+            <p className="text-xs">
+              💡 <strong>New to Alchemy?</strong> Get a free API key in 2 minutes at{' '}
+              <a 
+                href="https://www.alchemy.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="underline text-white hover:text-blue-200"
+              >
+                alchemy.com
+              </a>{' '}
+              for unlimited usage.
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

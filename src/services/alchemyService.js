@@ -39,7 +39,14 @@ export const initializeAlchemy = (userApiKey = null, network = Network.ETH_MAINN
 };
 
 // Check if demo API usage is allowed
-export const checkDemoUsage = () => {
+export const checkDemoUsage = (userProvidedKey = null) => {
+  // If user provided their own API key, don't check demo limits
+  if (userProvidedKey && userProvidedKey.trim()) {
+    console.log("Using user-provided API key, skipping demo limits");
+    return null;
+  }
+  
+  // Only check demo limits if we're actually using the demo API
   if (isUsingDemoAPI(currentApiKey)) {
     if (!canUseDemoAPI()) {
       throw new Error("🚫 Demo limit reached! You've used your 2 free searches. Please provide your own Alchemy API key to continue or refresh the page for a new session.");
@@ -49,17 +56,20 @@ export const checkDemoUsage = () => {
     console.log("Demo API call used:", usage);
     return usage;
   }
+  
+  // User is using their own API key (not demo), no limits apply
+  console.log("Using user's own API key, no demo limits apply");
   return null;
 };
 
 // Get transactions for a specific address with optional time range
-export const getAddressTransactions = async (address, startTime = null, endTime = null) => {
+export const getAddressTransactions = async (address, startTime = null, endTime = null, userApiKey = null) => {
   if (!alchemy) {
     throw new Error('Alchemy SDK not initialized. Please provide API key first.');
   }
   
-  // Check demo usage limits
-  checkDemoUsage();
+  // Check demo usage limits (skip if user provided their own key)
+  checkDemoUsage(userApiKey);
   
   try {
     // Base query params
