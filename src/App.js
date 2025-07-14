@@ -1022,7 +1022,7 @@ function App() {
       </main>
 
       <footer className="app-footer mt-8 py-4 border-t border-gray-200">
-        <p className="text-center text-gray-500 text-sm">EtherFlow &copy; 2025 - Ethereum Transaction Analysis</p>
+        <p className="text-center text-gray-500 text-sm">&copy; 2025 Daniel Huber</p>
       </footer>
       
       {selectedPartner && (
